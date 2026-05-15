@@ -63,7 +63,7 @@ export default function Home() {
           display: 'flex',
           alignItems: 'center',
           width: '100%',
-          maxWidth: 1100,
+          maxWidth: 1400,
           padding: '0 40px',
           gap: 0,
         }}

@@ -62,7 +62,7 @@ export default function About() {
           style={{
             fontSize: '0.65rem',
             letterSpacing: '0.3em',
-            color: 'rgba(180,150,255,0.5)',
+            color: 'rgba(196,180,240,0.72)',
             marginBottom: 8,
             textTransform: 'uppercase',
           }}
@@ -91,8 +91,8 @@ export default function About() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.1 + i * 0.08, duration: 0.35 }}
             style={{
-              color: i === 0 ? 'rgba(220,200,255,0.88)' : 'rgba(180,160,230,0.62)',
-              fontSize: i === 0 ? '1rem' : '0.875rem',
+              color: i === 0 ? 'rgba(232,226,250,0.95)' : 'rgba(216,210,236,0.85)',
+              fontSize: i === 0 ? '1rem' : '0.9rem',
               lineHeight: 1.75,
               fontFamily: 'Courier New, monospace',
             }}

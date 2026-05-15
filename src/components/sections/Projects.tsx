@@ -15,8 +15,8 @@ function Thumbnail({ p }: { p: Project }) {
       title={p.live ? 'View live site' : 'View on GitHub'}
       style={{
         flexShrink: 0,
-        width: 168,
-        height: 110,
+        width: 260,
+        height: 168,
         display: 'block',
         borderRadius: 2,
         overflow: 'hidden',
@@ -67,7 +67,7 @@ export default function Projects() {
         style={{
           fontSize: '0.65rem',
           letterSpacing: '0.3em',
-          color: 'rgba(180,150,255,0.5)',
+          color: 'rgba(196,180,240,0.72)',
           marginBottom: 20,
           textTransform: 'uppercase',
         }}
@@ -106,7 +106,7 @@ export default function Projects() {
                     <div style={{ fontSize: '0.88rem', color: '#f0eaff', fontFamily: 'Courier New, monospace', fontWeight: 600, letterSpacing: '0.04em' }}>
                       {p.name}
                     </div>
-                    <div style={{ fontSize: '0.62rem', color: 'rgba(180,150,255,0.5)', letterSpacing: '0.18em', textTransform: 'uppercase', marginTop: 1 }}>
+                    <div style={{ fontSize: '0.62rem', color: 'rgba(190,172,238,0.72)', letterSpacing: '0.18em', textTransform: 'uppercase', marginTop: 1 }}>
                       {p.tagline}
                     </div>
                   </div>
@@ -133,7 +133,7 @@ export default function Projects() {
                   </div>
                 </div>
 
-                <p style={{ fontSize: '0.75rem', color: 'rgba(180,165,220,0.62)', lineHeight: 1.55, marginBottom: 8, fontFamily: 'Courier New, monospace' }}>
+                <p style={{ fontSize: '0.8rem', color: 'rgba(220,214,238,0.92)', lineHeight: 1.65, marginBottom: 8, fontFamily: 'Courier New, monospace' }}>
                   {p.description}
                 </p>
 
@@ -141,7 +141,7 @@ export default function Projects() {
                   {p.tech.map(t => (
                     <span
                       key={t}
-                      style={{ fontSize: '0.58rem', letterSpacing: '0.08em', color: 'rgba(160,130,255,0.58)', background: 'rgba(80,40,160,0.14)', border: '1px solid rgba(100,70,200,0.18)', padding: '1px 7px', borderRadius: 2 }}
+                      style={{ fontSize: '0.58rem', letterSpacing: '0.08em', color: 'rgba(208,198,246,0.82)', background: 'rgba(80,40,160,0.2)', border: '1px solid rgba(120,90,210,0.3)', padding: '1px 7px', borderRadius: 2 }}
                     >
                       {t}
                     </span>

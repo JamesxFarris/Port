@@ -22,7 +22,7 @@ export default function Skills() {
         style={{
           fontSize: '0.65rem',
           letterSpacing: '0.3em',
-          color: 'rgba(180,150,255,0.5)',
+          color: 'rgba(196,180,240,0.72)',
           marginBottom: 24,
           textTransform: 'uppercase',
         }}
@@ -72,8 +72,8 @@ export default function Skills() {
                     padding: '5px 14px',
                     border: `1px solid ${CATEGORY_COLORS[category]}44`,
                     background: `${CATEGORY_COLORS[category]}14`,
-                    color: 'rgba(210,190,255,0.75)',
-                    fontSize: '0.75rem',
+                    color: 'rgba(224,216,250,0.92)',
+                    fontSize: '0.78rem',
                     letterSpacing: '0.05em',
                     borderRadius: 2,
                     fontFamily: 'Courier New, monospace',

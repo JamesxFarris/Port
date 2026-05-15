@@ -16,7 +16,7 @@ const inputStyle: React.CSSProperties = {
 };
 
 const label = (text: string) => (
-  <label style={{ display: 'block', fontSize: '0.6rem', letterSpacing: '0.2em', color: 'rgba(180,150,255,0.5)', marginBottom: 6, textTransform: 'uppercase' as const }}>
+  <label style={{ display: 'block', fontSize: '0.6rem', letterSpacing: '0.2em', color: 'rgba(196,180,240,0.72)', marginBottom: 6, textTransform: 'uppercase' as const }}>
     {text}
   </label>
 );
@@ -56,7 +56,7 @@ export default function Contact() {
         style={{
           fontSize: '0.65rem',
           letterSpacing: '0.3em',
-          color: 'rgba(180,150,255,0.5)',
+          color: 'rgba(196,180,240,0.72)',
           marginBottom: 24,
           textTransform: 'uppercase',
         }}
@@ -72,7 +72,7 @@ export default function Contact() {
         >
           <div style={{ fontSize: '1.5rem', marginBottom: 12 }}>✓</div>
           <div>Message sent.</div>
-          <div style={{ color: 'rgba(180,150,255,0.5)', fontSize: '0.75rem', marginTop: 8 }}>
+          <div style={{ color: 'rgba(214,206,238,0.85)', fontSize: '0.75rem', marginTop: 8 }}>
             I'll get back to you at jafarris.exe@gmail.com.
           </div>
         </motion.div>
@@ -160,7 +160,7 @@ export default function Contact() {
       )}
 
       <div style={{ marginTop: 32, paddingTop: 24, borderTop: '1px solid rgba(100,70,180,0.2)' }}>
-        <div style={{ fontSize: '0.6rem', letterSpacing: '0.2em', color: 'rgba(180,150,255,0.4)', marginBottom: 12, textTransform: 'uppercase' }}>
+        <div style={{ fontSize: '0.6rem', letterSpacing: '0.2em', color: 'rgba(196,180,240,0.7)', marginBottom: 12, textTransform: 'uppercase' }}>
           Also find me
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
@@ -173,7 +173,7 @@ export default function Contact() {
               href={href}
               target="_blank"
               rel="noopener noreferrer"
-              style={{ color: 'rgba(180,150,255,0.55)', fontSize: '0.75rem', textDecoration: 'none', letterSpacing: '0.08em' }}
+              style={{ color: 'rgba(206,196,242,0.85)', fontSize: '0.75rem', textDecoration: 'none', letterSpacing: '0.08em' }}
             >
               {lbl}
             </a>
