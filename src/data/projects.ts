@@ -18,7 +18,7 @@ export const projects: Project[] = [
       '3,000+ U.S. tattoo shops. Smart SEO with LocalBusiness schema, timezone-aware "Open Now" badges, fuzzy-match duplicate prevention, Stripe premium upgrades, and an embeddable ratings widget shops can drop on their own sites.',
     tech: ['Next.js', 'TypeScript', 'PostgreSQL', 'Prisma', 'Stripe', 'Cloudinary', 'Google Places API'],
     github: 'https://github.com/JamesxFarris/InkLinkTattooFinder',
-    live: null,
+    live: 'https://inklinktattoofinder.com',
     accentColor: '#6B21A8',
   },
   {
@@ -40,7 +40,7 @@ export const projects: Project[] = [
       'Full website for a family-owned Myrtle Beach boardwalk hotel. Integrated booking system, interactive room gallery, event calendar — built vanilla for maximum load performance.',
     tech: ['HTML', 'CSS', 'JavaScript'],
     github: 'https://github.com/JamesxFarris/HSN',
-    live: 'https://jamesxfarris.github.io/HSN/',
+    live: 'https://holidaysandsnorth.com',
     accentColor: '#0F766E',
   },
   {
@@ -79,8 +79,8 @@ export const projects: Project[] = [
 ];
 
 export const skills = {
-  Languages: ['TypeScript', 'JavaScript', 'Python', 'C++', 'Lua / Luau', 'HTML', 'CSS / SCSS'],
-  Frameworks: ['Next.js', 'React', 'Node.js', 'Express'],
-  'Data & Cloud': ['PostgreSQL', 'Prisma ORM', 'Vercel', 'Railway', 'Cloudinary'],
-  'Tools & APIs': ['Stripe', 'Resend', 'Google Places API', 'Riot API', 'Git', 'ESLint'],
+  Languages: ['TypeScript', 'JavaScript', 'Java', 'SQL', 'HTML / CSS'],
+  Frameworks: ['Next.js', 'React', 'React Native', 'Node.js', 'Express', 'Prisma'],
+  'Data & Cloud': ['PostgreSQL', 'MongoDB', 'Vercel', 'Railway', 'Linux'],
+  'Tools & APIs': ['Stripe', 'Google Maps & Places APIs', 'REST APIs', 'Git', 'GitHub'],
 };

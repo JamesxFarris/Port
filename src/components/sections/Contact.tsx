@@ -1,6 +1,6 @@
 'use client';
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 
 const inputStyle: React.CSSProperties = {
   width: '100%',
@@ -15,8 +15,35 @@ const inputStyle: React.CSSProperties = {
   transition: 'border-color 0.2s',
 };
 
+const label = (text: string) => (
+  <label style={{ display: 'block', fontSize: '0.6rem', letterSpacing: '0.2em', color: 'rgba(180,150,255,0.5)', marginBottom: 6, textTransform: 'uppercase' as const }}>
+    {text}
+  </label>
+);
+
 export default function Contact() {
-  const [sent, setSent] = useState(false);
+  const [state, setState] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
+  const formRef = useRef<HTMLFormElement>(null);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setState('sending');
+    const fd = new FormData(e.currentTarget);
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: fd.get('name'),
+          email: fd.get('email'),
+          message: fd.get('message'),
+        }),
+      });
+      setState(res.ok ? 'sent' : 'error');
+    } catch {
+      setState('error');
+    }
+  };
 
   return (
     <motion.div
@@ -37,16 +64,28 @@ export default function Contact() {
         Get in Touch
       </div>
 
-      {!sent ? (
+      {state === 'sent' ? (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          style={{ color: 'rgba(100,220,180,0.8)', fontSize: '0.85rem', fontFamily: 'Courier New, monospace', lineHeight: 1.8 }}
+        >
+          <div style={{ fontSize: '1.5rem', marginBottom: 12 }}>✓</div>
+          <div>Message sent.</div>
+          <div style={{ color: 'rgba(180,150,255,0.5)', fontSize: '0.75rem', marginTop: 8 }}>
+            I'll get back to you at jafarris.exe@gmail.com.
+          </div>
+        </motion.div>
+      ) : (
         <form
-          onSubmit={e => { e.preventDefault(); setSent(true); }}
+          ref={formRef}
+          onSubmit={handleSubmit}
           style={{ display: 'flex', flexDirection: 'column', gap: 14 }}
         >
           <div>
-            <label style={{ display: 'block', fontSize: '0.6rem', letterSpacing: '0.2em', color: 'rgba(180,150,255,0.5)', marginBottom: 6, textTransform: 'uppercase' }}>
-              Name
-            </label>
+            {label('Name')}
             <input
+              name="name"
               type="text"
               required
               placeholder="Your name"
@@ -56,10 +95,9 @@ export default function Contact() {
             />
           </div>
           <div>
-            <label style={{ display: 'block', fontSize: '0.6rem', letterSpacing: '0.2em', color: 'rgba(180,150,255,0.5)', marginBottom: 6, textTransform: 'uppercase' }}>
-              Email
-            </label>
+            {label('Email')}
             <input
+              name="email"
               type="email"
               required
               placeholder="your@email.com"
@@ -69,10 +107,9 @@ export default function Contact() {
             />
           </div>
           <div>
-            <label style={{ display: 'block', fontSize: '0.6rem', letterSpacing: '0.2em', color: 'rgba(180,150,255,0.5)', marginBottom: 6, textTransform: 'uppercase' }}>
-              Message
-            </label>
+            {label('Message')}
             <textarea
+              name="message"
               required
               rows={4}
               placeholder="What are you building?"
@@ -81,66 +118,67 @@ export default function Contact() {
               onBlur={e => (e.target.style.borderColor = 'rgba(120,80,220,0.3)')}
             />
           </div>
+
+          {state === 'error' && (
+            <div style={{ fontSize: '0.7rem', color: 'rgba(255,100,100,0.8)', letterSpacing: '0.1em' }}>
+              Something went wrong — try emailing jafarris.exe@gmail.com directly.
+            </div>
+          )}
+
           <button
             type="submit"
+            disabled={state === 'sending'}
             style={{
               padding: '10px 24px',
               background: 'rgba(80,40,160,0.3)',
               border: '1px solid rgba(120,80,220,0.5)',
-              color: 'rgba(220,200,255,0.9)',
+              color: state === 'sending' ? 'rgba(180,150,255,0.4)' : 'rgba(220,200,255,0.9)',
               fontSize: '0.7rem',
               letterSpacing: '0.25em',
               textTransform: 'uppercase',
-              cursor: 'pointer',
+              cursor: state === 'sending' ? 'default' : 'pointer',
               fontFamily: 'Courier New, monospace',
               transition: 'background 0.2s, border-color 0.2s',
               borderRadius: 2,
               alignSelf: 'flex-start',
             }}
             onMouseEnter={e => {
-              (e.target as HTMLElement).style.background = 'rgba(100,50,200,0.4)';
-              (e.target as HTMLElement).style.borderColor = 'rgba(160,120,255,0.8)';
+              if (state === 'sending') return;
+              const el = e.currentTarget;
+              el.style.background = 'rgba(100,50,200,0.4)';
+              el.style.borderColor = 'rgba(160,120,255,0.8)';
             }}
             onMouseLeave={e => {
-              (e.target as HTMLElement).style.background = 'rgba(80,40,160,0.3)';
-              (e.target as HTMLElement).style.borderColor = 'rgba(120,80,220,0.5)';
+              const el = e.currentTarget;
+              el.style.background = 'rgba(80,40,160,0.3)';
+              el.style.borderColor = 'rgba(120,80,220,0.5)';
             }}
           >
-            Send Message
+            {state === 'sending' ? 'Sending...' : 'Send Message'}
           </button>
         </form>
-      ) : (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          style={{ color: 'rgba(100,220,180,0.8)', fontSize: '0.85rem', fontFamily: 'Courier New, monospace', lineHeight: 1.8 }}
-        >
-          <div style={{ fontSize: '1.5rem', marginBottom: 12 }}>✓</div>
-          <div>Message received.</div>
-          <div style={{ color: 'rgba(180,150,255,0.5)', fontSize: '0.75rem', marginTop: 8 }}>
-            I'll get back to you soon.
-          </div>
-        </motion.div>
       )}
 
       <div style={{ marginTop: 32, paddingTop: 24, borderTop: '1px solid rgba(100,70,180,0.2)' }}>
         <div style={{ fontSize: '0.6rem', letterSpacing: '0.2em', color: 'rgba(180,150,255,0.4)', marginBottom: 12, textTransform: 'uppercase' }}>
           Also find me
         </div>
-        <a
-          href="https://github.com/JamesxFarris"
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{
-            display: 'inline-flex', alignItems: 'center', gap: 8,
-            color: 'rgba(180,150,255,0.6)',
-            fontSize: '0.75rem',
-            textDecoration: 'none',
-            letterSpacing: '0.1em',
-          }}
-        >
-          github.com/JamesxFarris
-        </a>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+          {[
+            { label: 'github.com/JamesxFarris', href: 'https://github.com/JamesxFarris' },
+            { label: 'linkedin.com/in/james-farris', href: 'https://linkedin.com/in/james-farris' },
+          ].map(({ label: lbl, href }) => (
+            <a
+              key={href}
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: 'rgba(180,150,255,0.55)', fontSize: '0.75rem', textDecoration: 'none', letterSpacing: '0.08em' }}
+            >
+              {lbl}
+            </a>
+          ))}
+        </div>
       </div>
     </motion.div>
   );
