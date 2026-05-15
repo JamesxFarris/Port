@@ -1,5 +1,6 @@
 'use client';
-import { motion } from 'framer-motion';
+import { motion, useMotionValue, useAnimationFrame, animate } from 'framer-motion';
+import { useEffect, useState } from 'react';
 
 export type Section = 'about' | 'projects' | 'skills' | 'contact';
 
@@ -39,11 +40,33 @@ export default function GameCube({ active, onNavigate, compact = false }: Props)
   const size = compact ? 100 : 220;
   const half = size / 2;
 
-  // Rotation: bring the active face to the front, rotating toward the
-  // direction of its label (up for ABOUT, down for SKILLS, etc.).
-  const pose = active
-    ? FACES.find(f => f.face === active)?.cube ?? IDLE_POSE
-    : IDLE_POSE;
+  const rotateX = useMotionValue(IDLE_POSE.rotX);
+  const rotateY = useMotionValue(IDLE_POSE.rotY);
+  const [hovered, setHovered] = useState(false);
+
+  // Idle turntable spin: a full revolution every 20s, only while no
+  // section is selected and the cube isn't hovered.
+  useAnimationFrame((_, delta) => {
+    if (active === null && !hovered) {
+      rotateY.set(rotateY.get() - (delta * 360) / 20000);
+    }
+  });
+
+  // On select, ease toward that face (rotating in its label's direction);
+  // on deselect, ease the tilt back and let the idle spin resume.
+  useEffect(() => {
+    const ease = [0.25, 0.46, 0.45, 0.94] as const;
+    // Shortest angular path from the (possibly multi-turn) current angle.
+    const nearest = (current: number, target: number) =>
+      current + (((target - current) % 360) + 540) % 360 - 180;
+    if (active) {
+      const target = FACES.find(f => f.face === active)?.cube ?? IDLE_POSE;
+      animate(rotateX, nearest(rotateX.get(), target.rotX), { duration: 0.75, ease });
+      animate(rotateY, nearest(rotateY.get(), target.rotY), { duration: 0.75, ease });
+    } else {
+      animate(rotateX, IDLE_POSE.rotX, { duration: 0.6, ease });
+    }
+  }, [active, rotateX, rotateY]);
 
   return (
     <div className="flex flex-col items-center gap-0 select-none">
@@ -73,9 +96,9 @@ export default function GameCube({ active, onNavigate, compact = false }: Props)
         >
           <motion.div
             className="cube"
-            style={{ width: size, height: size, transformStyle: 'preserve-3d' }}
-            animate={{ rotateX: pose.rotX, rotateY: pose.rotY }}
-            transition={{ duration: 0.75, ease: [0.25, 0.46, 0.45, 0.94] }}
+            style={{ width: size, height: size, transformStyle: 'preserve-3d', rotateX, rotateY }}
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
           >
             {FACES.map(({ face, label, rotY: fy, rotX: fx }) => (
               <div
