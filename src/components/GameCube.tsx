@@ -92,7 +92,7 @@ export default function GameCube({ active, onNavigate, compact = false }: Props)
         {/* The 3D cube */}
         <div
           className="scene"
-          style={{ width: size, height: size, margin: compact ? '24px 12px' : '48px 24px' }}
+          style={{ width: size, height: size, margin: compact ? '24px 26px' : '48px 56px' }}
         >
           <motion.div
             className="cube"
