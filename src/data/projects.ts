@@ -20,7 +20,7 @@ export const projects: Project[] = [
     tech: ['Next.js', 'TypeScript', 'PostgreSQL', 'Prisma', 'Stripe', 'Google Maps & Places API'],
     github: 'https://github.com/JamesxFarris/InkLinkTattooFinder',
     live: 'https://inklinktattoofinder.com',
-    screenshot: null,
+    screenshot: '/screenshots/inklink.png',
     accentColor: '#6B21A8',
   },
   {
@@ -32,7 +32,7 @@ export const projects: Project[] = [
     tech: ['HTML', 'CSS', 'JavaScript'],
     github: 'https://github.com/JamesxFarris/HSN',
     live: 'https://holidaysandsnorth.com',
-    screenshot: null,
+    screenshot: '/screenshots/hsn.png',
     accentColor: '#0F766E',
   },
   {
@@ -44,7 +44,7 @@ export const projects: Project[] = [
     tech: ['HTML', 'CSS', 'JavaScript'],
     github: 'https://github.com/JamesxFarris/J-Development',
     live: 'https://loving-alignment-production.up.railway.app/',
-    screenshot: null,
+    screenshot: '/screenshots/j2dev.png',
     accentColor: '#1D4ED8',
   },
   {
@@ -56,7 +56,7 @@ export const projects: Project[] = [
     tech: ['React', 'JavaScript', 'Vite', 'PWA'],
     github: 'https://github.com/J2-Development/Castle-Clicker',
     live: 'https://j2-development.github.io/Castle-Clicker/',
-    screenshot: null,
+    screenshot: '/screenshots/castle-clicker.png',
     accentColor: '#92400E',
   },
   {

@@ -1,6 +1,58 @@
 'use client';
 import { motion } from 'framer-motion';
-import { projects } from '@/data/projects';
+import { useState } from 'react';
+import { projects, type Project } from '@/data/projects';
+
+function Thumbnail({ p }: { p: Project }) {
+  const [failed, setFailed] = useState(false);
+  const href = p.live ?? p.github;
+
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      title={p.live ? 'View live site' : 'View on GitHub'}
+      style={{
+        flexShrink: 0,
+        width: 112,
+        height: 72,
+        display: 'block',
+        borderRadius: 2,
+        overflow: 'hidden',
+        border: '1px solid rgba(120,80,220,0.2)',
+        transition: 'border-color 0.2s',
+      }}
+      onMouseEnter={e => ((e.currentTarget as HTMLAnchorElement).style.borderColor = 'rgba(160,120,255,0.5)')}
+      onMouseLeave={e => ((e.currentTarget as HTMLAnchorElement).style.borderColor = 'rgba(120,80,220,0.2)')}
+    >
+      {p.screenshot && !failed ? (
+        <img
+          src={p.screenshot}
+          alt={`${p.name} screenshot`}
+          onError={() => setFailed(true)}
+          style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top', display: 'block', opacity: 0.88 }}
+        />
+      ) : (
+        /* Placeholder — shows until screenshot file is dropped in */
+        <div
+          style={{
+            width: '100%',
+            height: '100%',
+            background: `linear-gradient(135deg, ${p.accentColor}28 0%, ${p.accentColor}10 100%)`,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '1rem',
+            color: `${p.accentColor}88`,
+          }}
+        >
+          ↗
+        </div>
+      )}
+    </a>
+  );
+}
 
 export default function Projects() {
   return (
@@ -23,7 +75,7 @@ export default function Projects() {
         {projects.length} Projects
       </div>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
         {projects.map((p, i) => (
           <motion.div
             key={p.id}
@@ -31,90 +83,41 @@ export default function Projects() {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.06, duration: 0.3 }}
-            style={{ padding: '14px 16px', cursor: 'default' }}
+            style={{ padding: '12px 14px' }}
           >
-            {/* Top color bar */}
+            {/* Top accent bar */}
             <div
               style={{
                 position: 'absolute',
                 top: 0, left: 0, right: 0,
                 height: 2,
                 background: p.accentColor,
-                opacity: 0.8,
+                opacity: 0.75,
               }}
             />
 
             <div style={{ display: 'flex', gap: 14 }}>
-              {/* Screenshot thumbnail — only for projects without a live link */}
-              {p.screenshot && !p.live && (
-                <a
-                  href={p.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  title="View on GitHub"
-                  style={{ flexShrink: 0, display: 'block' }}
-                >
-                  <img
-                    src={p.screenshot}
-                    alt={`${p.name} screenshot`}
-                    style={{
-                      width: 90,
-                      height: 60,
-                      objectFit: 'cover',
-                      borderRadius: 2,
-                      border: '1px solid rgba(120,80,220,0.25)',
-                      opacity: 0.85,
-                      display: 'block',
-                      transition: 'opacity 0.2s',
-                    }}
-                    onMouseEnter={e => ((e.target as HTMLImageElement).style.opacity = '1')}
-                    onMouseLeave={e => ((e.target as HTMLImageElement).style.opacity = '0.85')}
-                  />
-                </a>
-              )}
+              <Thumbnail p={p} />
 
               <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 6 }}>
+                {/* Header row */}
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 4 }}>
                   <div>
-                    <div
-                      style={{
-                        fontSize: '0.9rem',
-                        color: '#f0eaff',
-                        fontFamily: 'Courier New, monospace',
-                        fontWeight: 600,
-                        letterSpacing: '0.05em',
-                      }}
-                    >
+                    <div style={{ fontSize: '0.88rem', color: '#f0eaff', fontFamily: 'Courier New, monospace', fontWeight: 600, letterSpacing: '0.04em' }}>
                       {p.name}
                     </div>
-                    <div
-                      style={{
-                        fontSize: '0.65rem',
-                        color: 'rgba(180,150,255,0.5)',
-                        letterSpacing: '0.2em',
-                        textTransform: 'uppercase',
-                        marginTop: 2,
-                      }}
-                    >
+                    <div style={{ fontSize: '0.62rem', color: 'rgba(180,150,255,0.5)', letterSpacing: '0.18em', textTransform: 'uppercase', marginTop: 1 }}>
                       {p.tagline}
                     </div>
                   </div>
 
-                  <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexShrink: 0, marginLeft: 8 }}>
+                  <div style={{ display: 'flex', gap: 6, alignItems: 'center', flexShrink: 0, marginLeft: 8 }}>
                     {p.live && (
                       <a
                         href={p.live}
                         target="_blank"
                         rel="noopener noreferrer"
-                        style={{
-                          fontSize: '0.6rem',
-                          letterSpacing: '0.15em',
-                          color: 'rgba(100,220,200,0.8)',
-                          textDecoration: 'none',
-                          textTransform: 'uppercase',
-                          border: '1px solid rgba(100,220,200,0.3)',
-                          padding: '2px 8px',
-                        }}
+                        style={{ fontSize: '0.58rem', letterSpacing: '0.12em', color: 'rgba(100,220,200,0.8)', textDecoration: 'none', textTransform: 'uppercase', border: '1px solid rgba(100,220,200,0.3)', padding: '2px 7px', borderRadius: 2 }}
                       >
                         Live
                       </a>
@@ -123,46 +126,22 @@ export default function Projects() {
                       href={p.github}
                       target="_blank"
                       rel="noopener noreferrer"
-                      style={{
-                        fontSize: '0.6rem',
-                        letterSpacing: '0.15em',
-                        color: 'rgba(180,150,255,0.6)',
-                        textDecoration: 'none',
-                        textTransform: 'uppercase',
-                        border: '1px solid rgba(120,80,220,0.3)',
-                        padding: '2px 8px',
-                      }}
+                      style={{ fontSize: '0.58rem', letterSpacing: '0.12em', color: 'rgba(180,150,255,0.6)', textDecoration: 'none', textTransform: 'uppercase', border: '1px solid rgba(120,80,220,0.3)', padding: '2px 7px', borderRadius: 2 }}
                     >
                       Code
                     </a>
                   </div>
                 </div>
 
-                <p
-                  style={{
-                    fontSize: '0.78rem',
-                    color: 'rgba(180,165,220,0.65)',
-                    lineHeight: 1.6,
-                    marginBottom: 10,
-                    fontFamily: 'Courier New, monospace',
-                  }}
-                >
+                <p style={{ fontSize: '0.75rem', color: 'rgba(180,165,220,0.62)', lineHeight: 1.55, marginBottom: 8, fontFamily: 'Courier New, monospace' }}>
                   {p.description}
                 </p>
 
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
                   {p.tech.map(t => (
                     <span
                       key={t}
-                      style={{
-                        fontSize: '0.6rem',
-                        letterSpacing: '0.1em',
-                        color: 'rgba(160,130,255,0.6)',
-                        background: 'rgba(80,40,160,0.15)',
-                        border: '1px solid rgba(100,70,200,0.2)',
-                        padding: '1px 8px',
-                        borderRadius: 2,
-                      }}
+                      style={{ fontSize: '0.58rem', letterSpacing: '0.08em', color: 'rgba(160,130,255,0.58)', background: 'rgba(80,40,160,0.14)', border: '1px solid rgba(100,70,200,0.18)', padding: '1px 7px', borderRadius: 2 }}
                     >
                       {t}
                     </span>
