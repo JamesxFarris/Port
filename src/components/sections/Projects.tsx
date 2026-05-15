@@ -15,8 +15,8 @@ function Thumbnail({ p }: { p: Project }) {
       title={p.live ? 'View live site' : 'View on GitHub'}
       style={{
         flexShrink: 0,
-        width: 112,
-        height: 72,
+        width: 168,
+        height: 110,
         display: 'block',
         borderRadius: 2,
         overflow: 'hidden',

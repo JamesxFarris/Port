@@ -20,7 +20,7 @@ export const projects: Project[] = [
     tech: ['Next.js', 'TypeScript', 'PostgreSQL', 'Prisma', 'Stripe', 'Google Maps & Places API'],
     github: 'https://github.com/JamesxFarris/InkLinkTattooFinder',
     live: 'https://inklinktattoofinder.com',
-    screenshot: '/screenshots/inklink.png',
+    screenshot: '/photos/inklink.png',
     accentColor: '#6B21A8',
   },
   {
@@ -32,7 +32,7 @@ export const projects: Project[] = [
     tech: ['HTML', 'CSS', 'JavaScript'],
     github: 'https://github.com/JamesxFarris/HSN',
     live: 'https://holidaysandsnorth.com',
-    screenshot: '/screenshots/hsn.png',
+    screenshot: '/photos/hsn.png',
     accentColor: '#0F766E',
   },
   {
@@ -44,7 +44,7 @@ export const projects: Project[] = [
     tech: ['HTML', 'CSS', 'JavaScript'],
     github: 'https://github.com/JamesxFarris/J-Development',
     live: 'https://loving-alignment-production.up.railway.app/',
-    screenshot: '/screenshots/j2dev.png',
+    screenshot: '/photos/j2dev.png',
     accentColor: '#1D4ED8',
   },
   {
@@ -56,7 +56,7 @@ export const projects: Project[] = [
     tech: ['React', 'JavaScript', 'Vite', 'PWA'],
     github: 'https://github.com/J2-Development/Castle-Clicker',
     live: 'https://j2-development.github.io/Castle-Clicker/',
-    screenshot: '/screenshots/castle-clicker.png',
+    screenshot: '/photos/castle-clicker.png',
     accentColor: '#92400E',
   },
   {
@@ -68,7 +68,7 @@ export const projects: Project[] = [
     tech: ['Node.js', 'Express', 'MySQL', 'Sequelize', 'Handlebars'],
     github: 'https://github.com/JamesxFarris/somniary',
     live: null,
-    screenshot: '/screenshots/somniary.png',
+    screenshot: '/photos/somniary.png',
     accentColor: '#1E3A5F',
   },
   {
@@ -80,7 +80,7 @@ export const projects: Project[] = [
     tech: ['React', 'GraphQL', 'Apollo', 'MongoDB', 'Node.js', 'Express'],
     github: 'https://github.com/Cat-Scratch-Feev/trivia-feev',
     live: null,
-    screenshot: '/screenshots/trivia-feev.png',
+    screenshot: '/photos/trivia-feev.png',
     accentColor: '#14532D',
   },
 ];
