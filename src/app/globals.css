@@ -1,0 +1,161 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #03030f;
+  --cube-purple: #4a1a8a;
+  --cube-teal: #0d7a7a;
+  --cube-blue: #1a2a6c;
+  --glow: rgba(120, 60, 220, 0.4);
+  --text-primary: #f0eaff;
+  --text-dim: rgba(200, 180, 255, 0.5);
+  --border: rgba(150, 120, 255, 0.2);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: 'Courier New', Courier, monospace;
+  overflow: hidden;
+  height: 100dvh;
+  width: 100vw;
+}
+
+/* GameCube 3D cube */
+.scene {
+  perspective: 900px;
+  perspective-origin: 50% 45%;
+}
+
+.cube {
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.cube-face {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backface-visibility: hidden;
+  background: linear-gradient(
+    145deg,
+    rgba(50, 20, 100, 0.55) 0%,
+    rgba(20, 80, 110, 0.5) 40%,
+    rgba(30, 50, 130, 0.5) 70%,
+    rgba(60, 15, 90, 0.55) 100%
+  );
+  border: 1px solid rgba(160, 130, 255, 0.25);
+}
+
+.cube-face::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.05) 0%,
+    transparent 50%,
+    rgba(255, 255, 255, 0.02) 100%
+  );
+  pointer-events: none;
+}
+
+/* Stars */
+@keyframes twinkle {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+/* Cube idle rotation */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+/* Section slide-in */
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(40px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.section-enter {
+  animation: slideIn 0.4s ease forwards;
+}
+
+/* Scanline overlay for retro feel */
+.scanlines::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.03) 2px,
+    rgba(0, 0, 0, 0.03) 4px
+  );
+  pointer-events: none;
+  z-index: 999;
+}
+
+/* Custom scrollbar for content areas */
+.content-scroll {
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(120, 60, 220, 0.5) transparent;
+}
+.content-scroll::-webkit-scrollbar { width: 4px; }
+.content-scroll::-webkit-scrollbar-thumb { background: rgba(120, 60, 220, 0.5); border-radius: 2px; }
+
+/* Memory card tag style for project cards */
+.memory-card {
+  background: linear-gradient(135deg, #0a0a2a 0%, #1a1040 100%);
+  border: 1px solid rgba(120, 80, 220, 0.3);
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.memory-card:hover {
+  border-color: rgba(120, 80, 220, 0.7);
+  box-shadow: 0 0 20px rgba(100, 50, 200, 0.2);
+}
+
+.memory-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--cube-purple), var(--cube-teal));
+}
+
+/* Nav label animations */
+.nav-label {
+  transition: color 0.3s, opacity 0.3s, text-shadow 0.3s;
+  cursor: pointer;
+  letter-spacing: 0.15em;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  user-select: none;
+}
+
+.nav-label.active {
+  color: #fff;
+  text-shadow: 0 0 12px rgba(180, 140, 255, 0.8);
+}
+
+.nav-label.inactive {
+  color: rgba(180, 150, 255, 0.45);
+}
+
+.nav-label:hover {
+  color: rgba(220, 200, 255, 0.9);
+}
