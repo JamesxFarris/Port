@@ -9,12 +9,24 @@ type Props = {
   compact?: boolean;
 };
 
-const FACES: { face: Section; label: string; rotY: number; rotX: number }[] = [
-  { face: 'about',    label: 'ABOUT',    rotY: 0,    rotX: 0  },
-  { face: 'projects', label: 'PROJECTS', rotY: -90,  rotX: 0  },
-  { face: 'skills',   label: 'SKILLS',   rotY: 180,  rotX: 0  },
-  { face: 'contact',  label: 'CONTACT',  rotY: 90,   rotX: 0  },
+// Each face is mounted on a real side of the cube that matches where its
+// nav label sits: ABOUT on top, SKILLS on bottom, CONTACT/PROJECTS on the
+// sides. `cube` is the cube rotation that brings that face flat to the viewer.
+const FACES: {
+  face: Section;
+  label: string;
+  rotY: number;
+  rotX: number;
+  cube: { rotX: number; rotY: number };
+}[] = [
+  { face: 'about',    label: 'ABOUT',    rotY: 0,   rotX: 90,  cube: { rotX: -90, rotY: 0 } },
+  { face: 'skills',   label: 'SKILLS',   rotY: 0,   rotX: -90, cube: { rotX: 90,  rotY: 0 } },
+  { face: 'projects', label: 'PROJECTS', rotY: 90,  rotX: 0,   cube: { rotX: 0,   rotY: -90 } },
+  { face: 'contact',  label: 'CONTACT',  rotY: -90, rotX: 0,   cube: { rotX: 0,   rotY: 90 } },
 ];
+
+// Resting pose when nothing is selected — a gentle 3/4 view of the front face.
+const IDLE_POSE = { rotX: -14, rotY: -16 };
 
 const faceStyle = (rotY: number, rotX: number, size: number): React.CSSProperties => ({
   position: 'absolute',
@@ -27,8 +39,11 @@ export default function GameCube({ active, onNavigate, compact = false }: Props)
   const size = compact ? 100 : 220;
   const half = size / 2;
 
-  // Rotation: bring the active face to the front
-  const rotY = active === 'projects' ? 90 : active === 'skills' ? 180 : active === 'contact' ? -90 : 0;
+  // Rotation: bring the active face to the front, rotating toward the
+  // direction of its label (up for ABOUT, down for SKILLS, etc.).
+  const pose = active
+    ? FACES.find(f => f.face === active)?.cube ?? IDLE_POSE
+    : IDLE_POSE;
 
   return (
     <div className="flex flex-col items-center gap-0 select-none">
@@ -54,12 +69,12 @@ export default function GameCube({ active, onNavigate, compact = false }: Props)
         {/* The 3D cube */}
         <div
           className="scene"
-          style={{ width: size, height: size, margin: compact ? '12px' : '24px' }}
+          style={{ width: size, height: size, margin: compact ? '24px 12px' : '48px 24px' }}
         >
           <motion.div
             className="cube"
             style={{ width: size, height: size, transformStyle: 'preserve-3d' }}
-            animate={{ rotateY: rotY, rotateX: compact ? -15 : -18 }}
+            animate={{ rotateX: pose.rotX, rotateY: pose.rotY }}
             transition={{ duration: 0.75, ease: [0.25, 0.46, 0.45, 0.94] }}
           >
             {FACES.map(({ face, label, rotY: fy, rotX: fx }) => (
@@ -116,23 +131,36 @@ export default function GameCube({ active, onNavigate, compact = false }: Props)
               </div>
             ))}
 
-            {/* Top face — decorative */}
+            {/* Front face — shown at rest, decorative */}
             <div
               className="cube-face"
               style={{
                 position: 'absolute',
                 width: size, height: size,
-                transform: `rotateX(90deg) translateZ(${half}px)`,
-                opacity: 0.4,
+                transform: `translateZ(${half}px)`,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
               }}
-            />
-            {/* Bottom face — decorative */}
+            >
+              <span
+                style={{
+                  color: 'rgba(180,150,255,0.3)',
+                  fontSize: compact ? '0.5rem' : '0.7rem',
+                  letterSpacing: '0.35em',
+                  fontFamily: 'Courier New, monospace',
+                }}
+              >
+                ◆
+              </span>
+            </div>
+            {/* Back face — decorative */}
             <div
               className="cube-face"
               style={{
                 position: 'absolute',
                 width: size, height: size,
-                transform: `rotateX(-90deg) translateZ(${half}px)`,
+                transform: `rotateY(180deg) translateZ(${half}px)`,
                 opacity: 0.2,
               }}
             />
