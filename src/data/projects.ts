@@ -32,7 +32,7 @@ export const projects: Project[] = [
     tech: ['HTML', 'CSS', 'JavaScript'],
     github: 'https://github.com/JamesxFarris/HSN',
     live: 'https://holidaysandsnorth.com',
-    screenshot: '/photos/hsn.png',
+    screenshot: '/photos/holiday_sands.png',
     accentColor: '#0F766E',
   },
   {
@@ -44,7 +44,7 @@ export const projects: Project[] = [
     tech: ['HTML', 'CSS', 'JavaScript'],
     github: 'https://github.com/JamesxFarris/J-Development',
     live: 'https://loving-alignment-production.up.railway.app/',
-    screenshot: '/photos/j2dev.png',
+    screenshot: '/photos/J2.png',
     accentColor: '#1D4ED8',
   },
   {
@@ -56,7 +56,7 @@ export const projects: Project[] = [
     tech: ['React', 'JavaScript', 'Vite', 'PWA'],
     github: 'https://github.com/J2-Development/Castle-Clicker',
     live: 'https://j2-development.github.io/Castle-Clicker/',
-    screenshot: '/photos/castle-clicker.png',
+    screenshot: '/photos/Castle_clicker.png',
     accentColor: '#92400E',
   },
   {
@@ -68,7 +68,7 @@ export const projects: Project[] = [
     tech: ['Node.js', 'Express', 'MySQL', 'Sequelize', 'Handlebars'],
     github: 'https://github.com/JamesxFarris/somniary',
     live: null,
-    screenshot: '/photos/somniary.png',
+    screenshot: '/photos/Somniary.png',
     accentColor: '#1E3A5F',
   },
   {
@@ -80,7 +80,7 @@ export const projects: Project[] = [
     tech: ['React', 'GraphQL', 'Apollo', 'MongoDB', 'Node.js', 'Express'],
     github: 'https://github.com/Cat-Scratch-Feev/trivia-feev',
     live: null,
-    screenshot: '/photos/trivia-feev.png',
+    screenshot: '/photos/Feev.io.png',
     accentColor: '#14532D',
   },
 ];
