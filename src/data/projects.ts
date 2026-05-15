@@ -6,6 +6,7 @@ export type Project = {
   tech: string[];
   github: string;
   live: string | null;
+  screenshot: string | null;
   accentColor: string;
 };
 
@@ -19,6 +20,7 @@ export const projects: Project[] = [
     tech: ['Next.js', 'TypeScript', 'PostgreSQL', 'Prisma', 'Stripe', 'Google Maps & Places API'],
     github: 'https://github.com/JamesxFarris/InkLinkTattooFinder',
     live: 'https://inklinktattoofinder.com',
+    screenshot: null,
     accentColor: '#6B21A8',
   },
   {
@@ -30,6 +32,7 @@ export const projects: Project[] = [
     tech: ['HTML', 'CSS', 'JavaScript'],
     github: 'https://github.com/JamesxFarris/HSN',
     live: 'https://holidaysandsnorth.com',
+    screenshot: null,
     accentColor: '#0F766E',
   },
   {
@@ -40,7 +43,8 @@ export const projects: Project[] = [
       'Marketing and portfolio site for J2 Development, a web development studio. Designed and built to be lightweight — no framework overhead on a purely informational site.',
     tech: ['HTML', 'CSS', 'JavaScript'],
     github: 'https://github.com/JamesxFarris/J-Development',
-    live: null,
+    live: 'https://loving-alignment-production.up.railway.app/',
+    screenshot: null,
     accentColor: '#1D4ED8',
   },
   {
@@ -51,7 +55,8 @@ export const projects: Project[] = [
       'Incremental clicker game with a medieval castle-building theme — built as a PWA so it installs and runs offline. Developed under the J2 Development studio using React and Vite.',
     tech: ['React', 'JavaScript', 'Vite', 'PWA'],
     github: 'https://github.com/J2-Development/Castle-Clicker',
-    live: null,
+    live: 'https://j2-development.github.io/Castle-Clicker/',
+    screenshot: null,
     accentColor: '#92400E',
   },
   {
@@ -59,10 +64,11 @@ export const projects: Project[] = [
     name: 'Somniary',
     tagline: 'Dream Journal App',
     description:
-      'Full-stack journaling app where users log private dreams and optionally share them to a public "Dreamspace Collective" feed. User auth, account settings, and a daily reflection feature pulling from past entries.',
+      'Full-stack journaling app built in a team of three using Agile with two-week sprints. Users log private dreams and share to a public "Dreamspace Collective" feed. User auth, daily reflection feature, account settings.',
     tech: ['Node.js', 'Express', 'MySQL', 'Sequelize', 'Handlebars'],
     github: 'https://github.com/JamesxFarris/somniary',
     live: null,
+    screenshot: '/screenshots/somniary.png',
     accentColor: '#1E3A5F',
   },
   {
@@ -70,10 +76,11 @@ export const projects: Project[] = [
     name: 'feev.io Trivia',
     tagline: 'Multiplayer Trivia Platform',
     description:
-      'Trivia platform built with a team of five. Multiple categories, leaderboards, and user auth. Used GraphQL for the API layer — a deliberate choice to explore alternatives to REST on a collaborative project.',
+      'Trivia platform built with a team of five over two Agile sprints. Multiple categories, leaderboards, user auth. Used GraphQL + Apollo as a deliberate alternative to REST — scoped and shipped within the sprint.',
     tech: ['React', 'GraphQL', 'Apollo', 'MongoDB', 'Node.js', 'Express'],
     github: 'https://github.com/Cat-Scratch-Feev/trivia-feev',
     live: null,
+    screenshot: '/screenshots/trivia-feev.png',
     accentColor: '#14532D',
   },
 ];
