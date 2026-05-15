@@ -109,7 +109,7 @@ export default function About() {
         <HoverLink href="https://github.com/JamesxFarris">
           GitHub
         </HoverLink>
-        <HoverLink href="https://linkedin.com/in/james-farris">
+        <HoverLink href="https://www.linkedin.com/in/james-farris-9b4b33166/">
           LinkedIn
         </HoverLink>
       </div>

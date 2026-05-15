@@ -166,7 +166,7 @@ export default function Contact() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
           {[
             { label: 'github.com/JamesxFarris', href: 'https://github.com/JamesxFarris' },
-            { label: 'linkedin.com/in/james-farris', href: 'https://linkedin.com/in/james-farris' },
+            { label: 'linkedin.com/in/james-farris-9b4b33166', href: 'https://www.linkedin.com/in/james-farris-9b4b33166/' },
           ].map(({ label: lbl, href }) => (
             <a
               key={href}
