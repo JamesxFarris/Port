@@ -141,7 +141,7 @@ body {
   transition: color 0.3s, opacity 0.3s, text-shadow 0.3s;
   cursor: pointer;
   letter-spacing: 0.15em;
-  font-size: 0.75rem;
+  font-size: 0.82rem;
   text-transform: uppercase;
   user-select: none;
 }

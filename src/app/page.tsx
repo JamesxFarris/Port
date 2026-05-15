@@ -107,7 +107,7 @@ export default function Home() {
                   style={{
                     fontSize: '0.7rem',
                     letterSpacing: '0.3em',
-                    color: 'rgba(180,150,255,0.45)',
+                    color: 'rgba(206,198,236,0.8)',
                     marginTop: 8,
                     textTransform: 'uppercase',
                   }}
