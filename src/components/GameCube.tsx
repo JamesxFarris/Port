@@ -49,24 +49,53 @@ const ASCII_CAT = [
   "      `*-*   `*-*  `*-*'",
 ].join('\n');
 
-const ASCII_PEPE = `⣿⣿⣿⣿⣿⣿⣿⠛⢩⣴⣶⣶⣶⣌⠙⠫⠛⢋⣭⣤⣤⣤
-⣿⣿⣿⣿⣿⡟⢡⣾⣿⠿⣛⣛⣛⣛⣛⡳⠆⢻⣿⣿⣿⠿⠿⠷⡌
-⣿⣿⣿⣿⠏⣰⣿⣿⣴⣿⣿⣿⡿⠟⠛⠛⠒⠄⢶⣶⣶⣾⡿⠶⠒⠲⠌
-⣿⣿⠏⣡⢨⣝⡻⠿⣿⢛⣩⡵⠞⡫⠭⠭⣭⠭⠤⠈⠭⠒⣒⠩⠭⠭⣍⠒⠈
-⡿⢁⣾⣿⣸⣿⣿⣷⣬⡉⠁⠄⠁⠄⠄⠄⠄⠄⠄⠄⣶⠄⠄⠄⠄⠄⠄⠄⠄⢀
-⢡⣾⣿⣿⣿⣿⣿⣿⣿⣧⡀⠄⠄⠄⠄⠄⠄⠄⢀⣠⣿⣦⣤⣀⣀⣀⣀⠄
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣶⣶⡶⢇⣰⣿⣿⣟⠿⠿⠿⠿⠟
-⣿⣿⣿⣿⣿⣿⣿⡟⢛⡛⠿⠿⣿⣧⣶⣶⣿⣿⣿⣿⣿⣷⣼⣿⣿⣿⣧
-⠘⢿⣿⣿⣿⣿⣿⡇⢿⡿⠿⠦⣤⣈⣙⡛⠿⠿⠿⣿⣿⣿⣿⠿⠿⠟⠛⡀
-⠄⠄⠉⠻⢿⣿⣿⣷⣬⣙⠳⠶⢶⣤⣍⣙⡛⠓⠒⠶⠶⠶⠶⠖⢒⣛⣛⠁
-⠄⠄⠄⠄⠄⠈⠛⠛⠿⠿⣿⣷⣤⣤⣈⣉⣛⣛⣛⡛⠛⠛⠿⠿⠿⠟⢋
-⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠈⠉⠉⣻⣿⣿⣿⣿⡿⠿⠛⠃⠄⠙`;
+const ASCII_BACK = `⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡜⢣
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠎⡴⢦⠱
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⢎⣜⣉⣉⣧⡱⡄
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⢃⡞⠒⣒⣒⠒⢳⡘⣄
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⢡⣎⡩⠭⠤⠤⠭⢍⣱⡜⣆
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡴⢡⡯⠴⢒⣈⣩⣉⣑⡒⠠⣹⡌⢦
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⡔⣡⣣⠔⡺⡋⡁⢀⡀⢈⠙⢟⠢⣝⣄⢢
+⠀⠀⠀⠀⠀⠀⠀⢀⡜⣰⡟⠁⢰⡓⢎⣀⣸⣿⣷⡱⢚⡆⠈⢻⣆⢣⡀
+⠀⠀⠀⠀⠀⠀⢀⠎⡼⣇⠣⡀⠸⡄⢊⢿⣿⣿⡿⡑⢠⠇⢀⠜⣸⢧⠱⡀
+⠀⠀⠀⠀⠀⢠⢋⢼⡙⢌⠳⣍⠲⢽⣄⣁⠂⠐⣈⣠⡯⠔⣡⠞⡡⢊⣧⡙⡄
+⠀⠀⠀⠀⣠⢃⣞⠣⡙⠦⡑⠦⣍⡒⠤⠬⠭⠭⠥⠤⢒⣩⠴⢊⠴⢋⠜⣳⡘⣄
+⠀⠀⠀⣰⣃⣛⣚⣓⣚⣓⣚⣓⣒⣛⣛⣓⣒⣒⣚⣛⣛⣒⣚⣓⣚⣓⣚⣒⣛⣘⣆`;
 
-function AsciiArt({ art, size, color }: { art: string; size: number; color: string }) {
-  const lines = art.split('\n');
-  const cols = Math.max(...lines.map(l => l.length));
+function AsciiArt({
+  art,
+  size,
+  color,
+  // Glyph width as a fraction of font size. Courier New Latin glyphs are
+  // ~0.6em; Braille blocks fall back to a font that renders them ~1em wide.
+  charAspect = 0.6,
+  lineHeight = 1.1,
+  // Fill character used to pad short lines into a clean rectangle. Use a
+  // blank Braille cell for Braille art so every cell is the same glyph
+  // family (and therefore the same width).
+  fill = ' ',
+}: {
+  art: string;
+  size: number;
+  color: string;
+  charAspect?: number;
+  lineHeight?: number;
+  fill?: string;
+}) {
+  const rawLines = art.split('\n');
+  const cols = Math.max(...rawLines.map(l => [...l].length));
+  // Pad every line to the same width so the block is a true rectangle.
+  const block = rawLines
+    .map(l => l + fill.repeat(cols - [...l].length))
+    .join('\n');
   // Fit the block within the face with a little padding.
-  const fontSize = Math.max(4, Math.min((size * 0.86) / (cols * 0.6), (size * 0.86) / (lines.length * 1.1)));
+  const fontSize = Math.max(
+    4,
+    Math.min(
+      (size * 0.86) / (cols * charAspect),
+      (size * 0.86) / (rawLines.length * lineHeight),
+    ),
+  );
   return (
     <pre
       aria-hidden="true"
@@ -75,13 +104,13 @@ function AsciiArt({ art, size, color }: { art: string; size: number; color: stri
         color,
         fontFamily: 'Courier New, monospace',
         fontSize,
-        lineHeight: 1.1,
+        lineHeight,
         whiteSpace: 'pre',
         userSelect: 'none',
         pointerEvents: 'none',
       }}
     >
-      {art}
+      {block}
     </pre>
   );
 }
@@ -268,7 +297,14 @@ export default function GameCube({ active, onNavigate, compact = false, showLabe
               }}
             >
               {!compact && (
-                <AsciiArt art={ASCII_PEPE} size={size} color="rgba(150,210,180,0.5)" />
+                <AsciiArt
+                  art={ASCII_BACK}
+                  size={size}
+                  color="rgba(150,210,180,0.5)"
+                  charAspect={1.0}
+                  lineHeight={1.0}
+                  fill={'⠀'}
+                />
               )}
             </div>
           </motion.div>
