@@ -67,7 +67,7 @@ export const projects: Project[] = [
       'Full-stack journaling app built in a team of three using Agile with two-week sprints. Users log private dreams and share to a public "Dreamspace Collective" feed. User auth, daily reflection feature, account settings.',
     tech: ['Node.js', 'Express', 'MySQL', 'Sequelize', 'Handlebars'],
     github: 'https://github.com/JamesxFarris/somniary',
-    live: null,
+    live: 'https://sparkling-luck-production-37ef.up.railway.app/',
     screenshot: '/photos/Somniary.png',
     accentColor: '#1E3A5F',
   },
