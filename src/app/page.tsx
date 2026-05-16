@@ -146,6 +146,7 @@ function MobileNav({
         <button
           key={s}
           onClick={() => onNavigate(s)}
+          aria-current={active === s ? 'true' : undefined}
           className={`nav-label ${active === s ? 'active' : 'inactive'}`}
           style={{
             background: active === s ? 'rgba(90,50,180,0.25)' : 'rgba(40,20,80,0.25)',

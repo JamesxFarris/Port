@@ -75,8 +75,13 @@ export default function GameCube({ active, onNavigate, compact = false, showLabe
       ? '30px 26px'
       : '62px 56px';
 
+  const Root = showLabels ? 'nav' : 'div';
+
   return (
-    <div className="flex flex-col items-center gap-0 select-none">
+    <Root
+      className="flex flex-col items-center gap-0 select-none"
+      aria-label={showLabels ? 'Site sections' : undefined}
+    >
       {/* Top nav label */}
       {showLabels && (
         <NavLabel
@@ -107,6 +112,7 @@ export default function GameCube({ active, onNavigate, compact = false, showLabe
         >
           <motion.div
             className="cube"
+            aria-hidden="true"
             style={{ width: size, height: size, transformStyle: 'preserve-3d', rotateX, rotateY }}
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
@@ -240,7 +246,7 @@ export default function GameCube({ active, onNavigate, compact = false, showLabe
           <span>MENU SELECTION</span>
         </div>
       )}
-    </div>
+    </Root>
   );
 }
 
@@ -265,15 +271,20 @@ function NavLabel({
     padding: compact ? '4px 8px' : '8px 16px',
     minWidth: compact ? undefined : vertical ? undefined : 120,
     textAlign: 'center',
+    background: 'none',
+    border: 0,
+    fontFamily: 'inherit',
   };
 
   return (
-    <span
+    <button
+      type="button"
       className={`nav-label ${isActive ? 'active' : 'inactive'}`}
       style={style}
       onClick={onClick}
+      aria-current={isActive ? 'true' : undefined}
     >
       {label}
-    </span>
+    </button>
   );
 }

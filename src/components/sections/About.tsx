@@ -2,9 +2,10 @@
 import { motion } from 'framer-motion';
 
 const bio = [
-  "Self-taught full-stack developer based in Conway, South Carolina.",
-  "I build and ship production software — two live sites serving real users right now.",
-  "Finishing a B.S. in Computer Science at WGU, currently picking up Java alongside my usual TypeScript stack.",
+  "Self-taught full-stack developer in Conway, South Carolina — I design, build, and ship complete products, not just features.",
+  "Two production sites are live and serving real users today, including a 3,000+ listing directory with payments, search, and SEO built end to end.",
+  "Comfortable across the stack: TypeScript and React on the front; Node, PostgreSQL, and Prisma on the back — deployed and maintained in production.",
+  "Finishing a B.S. in Computer Science at WGU and adding Java to a primarily TypeScript toolkit.",
 ];
 
 const linkStyle: React.CSSProperties = {
@@ -58,6 +59,33 @@ export default function About() {
       style={{ height: '100%', padding: '0 8px', paddingRight: 0 }}
     >
       <div style={{ marginBottom: 28 }}>
+        <div
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 8,
+            fontSize: '0.62rem',
+            letterSpacing: '0.22em',
+            color: 'rgba(120,230,200,0.95)',
+            border: '1px solid rgba(100,220,180,0.4)',
+            background: 'rgba(40,120,100,0.12)',
+            padding: '5px 12px',
+            borderRadius: 999,
+            marginBottom: 16,
+            textTransform: 'uppercase',
+          }}
+        >
+          <span
+            style={{
+              width: 7,
+              height: 7,
+              borderRadius: '50%',
+              background: 'rgba(120,230,200,0.95)',
+              boxShadow: '0 0 8px rgba(120,230,200,0.9)',
+            }}
+          />
+          Available for full-stack roles — remote or relocation
+        </div>
         <div
           style={{
             fontSize: '0.65rem',
