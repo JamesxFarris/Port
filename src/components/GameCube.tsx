@@ -30,6 +30,62 @@ const FACES: {
 // Resting pose when nothing is selected — a gentle 3/4 view of the front face.
 const IDLE_POSE = { rotX: -14, rotY: -16 };
 
+// Decorative ASCII for the otherwise-empty front/back cube faces.
+const ASCII_CAT = [
+  '       _',
+  '       \\`*-.',
+  '        )  _`-.',
+  '       .  : `. .',
+  "       : _   '  \\",
+  '       ; *` _.   `*-._',
+  "       `-.-'          `-.",
+  '         ;       `       `.',
+  '         :.       .        \\',
+  "         . \\  .   :   .-'   .",
+  "         '  `+.;  ;  '      :",
+  "         :  '  |    ;       ;-.",
+  "         ; '   : :`-:     _.`* ;",
+  "      .*' /  .*' ; .*`- +'  `*'",
+  "      `*-*   `*-*  `*-*'",
+].join('\n');
+
+const ASCII_PEPE = `⣿⣿⣿⣿⣿⣿⣿⠛⢩⣴⣶⣶⣶⣌⠙⠫⠛⢋⣭⣤⣤⣤
+⣿⣿⣿⣿⣿⡟⢡⣾⣿⠿⣛⣛⣛⣛⣛⡳⠆⢻⣿⣿⣿⠿⠿⠷⡌
+⣿⣿⣿⣿⠏⣰⣿⣿⣴⣿⣿⣿⡿⠟⠛⠛⠒⠄⢶⣶⣶⣾⡿⠶⠒⠲⠌
+⣿⣿⠏⣡⢨⣝⡻⠿⣿⢛⣩⡵⠞⡫⠭⠭⣭⠭⠤⠈⠭⠒⣒⠩⠭⠭⣍⠒⠈
+⡿⢁⣾⣿⣸⣿⣿⣷⣬⡉⠁⠄⠁⠄⠄⠄⠄⠄⠄⠄⣶⠄⠄⠄⠄⠄⠄⠄⠄⢀
+⢡⣾⣿⣿⣿⣿⣿⣿⣿⣧⡀⠄⠄⠄⠄⠄⠄⠄⢀⣠⣿⣦⣤⣀⣀⣀⣀⠄
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣶⣶⡶⢇⣰⣿⣿⣟⠿⠿⠿⠿⠟
+⣿⣿⣿⣿⣿⣿⣿⡟⢛⡛⠿⠿⣿⣧⣶⣶⣿⣿⣿⣿⣿⣷⣼⣿⣿⣿⣧
+⠘⢿⣿⣿⣿⣿⣿⡇⢿⡿⠿⠦⣤⣈⣙⡛⠿⠿⠿⣿⣿⣿⣿⠿⠿⠟⠛⡀
+⠄⠄⠉⠻⢿⣿⣿⣷⣬⣙⠳⠶⢶⣤⣍⣙⡛⠓⠒⠶⠶⠶⠶⠖⢒⣛⣛⠁
+⠄⠄⠄⠄⠄⠈⠛⠛⠿⠿⣿⣷⣤⣤⣈⣉⣛⣛⣛⡛⠛⠛⠿⠿⠿⠟⢋
+⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠈⠉⠉⣻⣿⣿⣿⣿⡿⠿⠛⠃⠄⠙`;
+
+function AsciiArt({ art, size, color }: { art: string; size: number; color: string }) {
+  const lines = art.split('\n');
+  const cols = Math.max(...lines.map(l => l.length));
+  // Fit the block within the face with a little padding.
+  const fontSize = Math.max(4, Math.min((size * 0.86) / (cols * 0.6), (size * 0.86) / (lines.length * 1.1)));
+  return (
+    <pre
+      aria-hidden="true"
+      style={{
+        margin: 0,
+        color,
+        fontFamily: 'Courier New, monospace',
+        fontSize,
+        lineHeight: 1.1,
+        whiteSpace: 'pre',
+        userSelect: 'none',
+        pointerEvents: 'none',
+      }}
+    >
+      {art}
+    </pre>
+  );
+}
+
 const faceStyle = (rotY: number, rotX: number, size: number): React.CSSProperties => ({
   position: 'absolute',
   width: size,
@@ -183,16 +239,20 @@ export default function GameCube({ active, onNavigate, compact = false, showLabe
                 justifyContent: 'center',
               }}
             >
-              <span
-                style={{
-                  color: 'rgba(180,150,255,0.3)',
-                  fontSize: compact ? '0.5rem' : '0.7rem',
-                  letterSpacing: '0.35em',
-                  fontFamily: 'Courier New, monospace',
-                }}
-              >
-                ◆
-              </span>
+              {compact ? (
+                <span
+                  style={{
+                    color: 'rgba(180,150,255,0.3)',
+                    fontSize: '0.5rem',
+                    letterSpacing: '0.35em',
+                    fontFamily: 'Courier New, monospace',
+                  }}
+                >
+                  ◆
+                </span>
+              ) : (
+                <AsciiArt art={ASCII_CAT} size={size} color="rgba(190,160,255,0.42)" />
+              )}
             </div>
             {/* Back face — decorative */}
             <div
@@ -201,9 +261,16 @@ export default function GameCube({ active, onNavigate, compact = false, showLabe
                 position: 'absolute',
                 width: size, height: size,
                 transform: `rotateY(180deg) translateZ(${half}px)`,
-                opacity: 0.2,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                opacity: 0.55,
               }}
-            />
+            >
+              {!compact && (
+                <AsciiArt art={ASCII_PEPE} size={size} color="rgba(150,210,180,0.5)" />
+              )}
+            </div>
           </motion.div>
         </div>
 
