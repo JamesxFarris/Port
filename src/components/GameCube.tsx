@@ -74,6 +74,10 @@ function AsciiArt({
   // blank Braille cell for Braille art so every cell is the same glyph
   // family (and therefore the same width).
   fill = ' ',
+  // 'left' keeps each line's own indentation (good for art drawn on a
+  // fixed grid). 'center' strips blank padding from both ends and re-pads
+  // symmetrically, so a lopsided figure reads as centered.
+  align = 'left',
 }: {
   art: string;
   size: number;
@@ -81,12 +85,23 @@ function AsciiArt({
   charAspect?: number;
   lineHeight?: number;
   fill?: string;
+  align?: 'left' | 'center';
 }) {
   const rawLines = art.split('\n');
-  const cols = Math.max(...rawLines.map(l => [...l].length));
+  // Treat ASCII space and blank Braille (U+2800) as "empty" for trimming.
+  const trim = (l: string) => l.replace(/^[ ⠀]+|[ ⠀]+$/g, '');
+  const lines = align === 'center' ? rawLines.map(trim) : rawLines;
+  const cols = Math.max(...lines.map(l => [...l].length));
   // Pad every line to the same width so the block is a true rectangle.
-  const block = rawLines
-    .map(l => l + fill.repeat(cols - [...l].length))
+  const block = lines
+    .map(l => {
+      const pad = cols - [...l].length;
+      if (align === 'center') {
+        const left = Math.floor(pad / 2);
+        return fill.repeat(left) + l + fill.repeat(pad - left);
+      }
+      return l + fill.repeat(pad);
+    })
     .join('\n');
   // Fit the block within the face with a little padding.
   const fontSize = Math.max(
@@ -304,6 +319,7 @@ export default function GameCube({ active, onNavigate, compact = false, showLabe
                   charAspect={1.0}
                   lineHeight={1.0}
                   fill={'⠀'}
+                  align="center"
                 />
               )}
             </div>
