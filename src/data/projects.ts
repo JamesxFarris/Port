@@ -16,7 +16,7 @@ export const projects: Project[] = [
     name: 'InkLink',
     tagline: 'Tattoo Shop Directory',
     description:
-      '3,000+ U.S. tattoo shops searchable by location with real-time "Open Now" status across US time zones. End-to-end build: Next.js frontend, PostgreSQL + Prisma, Google Maps & Places, duplicate detection, Stripe subscriptions, and SEO with structured data.',
+      'Live in production with ~400 monthly users. 3,000+ U.S. tattoo shops searchable by location with real-time "Open Now" status across US time zones. End-to-end build: Next.js frontend, PostgreSQL + Prisma, Google Maps & Places, duplicate detection, Stripe subscriptions, and SEO with structured data.',
     tech: ['Next.js', 'TypeScript', 'PostgreSQL', 'Prisma', 'Stripe', 'Google Maps & Places API'],
     github: 'https://github.com/JamesxFarris/InkLinkTattooFinder',
     live: 'https://inklinktattoofinder.com',
