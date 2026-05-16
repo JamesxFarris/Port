@@ -26,6 +26,18 @@ body {
   width: 100vw;
 }
 
+/* The body is locked to one viewport for the desktop single-screen
+   layout. On mobile the layout is a tall scrolling column, so the
+   document itself must be allowed to scroll. */
+@media (max-width: 768px) {
+  body {
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: auto;
+    min-height: 100dvh;
+  }
+}
+
 /* GameCube 3D cube */
 .scene {
   perspective: 900px;
