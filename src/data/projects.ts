@@ -79,7 +79,7 @@ export const projects: Project[] = [
       'Trivia platform built with a team of five over two Agile sprints. Multiple categories, leaderboards, user auth. Used GraphQL + Apollo as a deliberate alternative to REST — scoped and shipped within the sprint.',
     tech: ['React', 'GraphQL', 'Apollo', 'MongoDB', 'Node.js', 'Express'],
     github: 'https://github.com/Cat-Scratch-Feev/trivia-feev',
-    live: null,
+    live: 'https://trivia-feev-production.up.railway.app/',
     screenshot: '/photos/Feev.io.png',
     accentColor: '#14532D',
   },
