@@ -62,6 +62,7 @@ export default function Home() {
           zIndex: 2,
           display: 'flex',
           alignItems: 'center',
+          justifyContent: active ? 'flex-start' : 'center',
           width: '100%',
           maxWidth: 1400,
           padding: '0 40px',
@@ -70,6 +71,7 @@ export default function Home() {
       >
         {/* Cube panel */}
         <motion.div
+          layout
           style={{
             display: 'flex',
             flexDirection: 'column',
@@ -77,7 +79,6 @@ export default function Home() {
             justifyContent: 'center',
             flexShrink: 0,
           }}
-          animate={{ x: active ? 0 : '18vw' }}
           transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
         >
           {/* Name — shown when no section is active */}
