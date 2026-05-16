@@ -15,8 +15,9 @@ function Thumbnail({ p }: { p: Project }) {
       title={p.live ? 'View live site' : 'View on GitHub'}
       style={{
         flexShrink: 0,
-        width: 260,
-        height: 168,
+        width: '100%',
+        maxWidth: 260,
+        aspectRatio: '260 / 168',
         display: 'block',
         borderRadius: 2,
         overflow: 'hidden',
@@ -96,10 +97,10 @@ export default function Projects() {
               }}
             />
 
-            <div style={{ display: 'flex', gap: 14 }}>
+            <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap' }}>
               <Thumbnail p={p} />
 
-              <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ flex: 1, minWidth: 220 }}>
                 {/* Header row */}
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 4 }}>
                   <div>

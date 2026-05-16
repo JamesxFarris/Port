@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import StarField from '@/components/StarField';
 import GameCube, { type Section } from '@/components/GameCube';
@@ -15,14 +15,221 @@ const SECTION_COMPONENTS: Record<Section, React.ComponentType> = {
   contact: Contact,
 };
 
+const NAV: Section[] = ['about', 'projects', 'skills', 'contact'];
+
+function useIsMobile() {
+  const [mobile, setMobile] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 768px)');
+    const update = () => setMobile(mq.matches);
+    update();
+    mq.addEventListener('change', update);
+    return () => mq.removeEventListener('change', update);
+  }, []);
+  return mobile;
+}
+
+function Identity() {
+  return (
+    <div style={{ textAlign: 'center', marginBottom: 32 }}>
+      <div
+        style={{
+          fontSize: '2rem',
+          fontWeight: 700,
+          letterSpacing: '-0.02em',
+          color: '#f0eaff',
+          fontFamily: 'Courier New, monospace',
+          lineHeight: 1.1,
+        }}
+      >
+        James Farris
+      </div>
+      <div
+        style={{
+          fontSize: '0.7rem',
+          letterSpacing: '0.3em',
+          color: 'rgba(206,198,236,0.8)',
+          marginTop: 8,
+          textTransform: 'uppercase',
+        }}
+      >
+        Full-Stack Developer
+      </div>
+    </div>
+  );
+}
+
+function SectionInner({
+  active,
+  onClose,
+}: {
+  active: Section;
+  onClose: () => void;
+}) {
+  const SectionContent = SECTION_COMPONENTS[active];
+  return (
+    <>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          marginBottom: 24,
+          paddingBottom: 16,
+          borderBottom: '1px solid rgba(100,70,180,0.2)',
+        }}
+      >
+        <div
+          style={{
+            fontSize: '1.1rem',
+            color: '#f0eaff',
+            fontFamily: 'Courier New, monospace',
+            letterSpacing: '0.15em',
+            textTransform: 'uppercase',
+          }}
+        >
+          {active}
+        </div>
+        <button
+          onClick={onClose}
+          style={{
+            background: 'none',
+            border: '1px solid rgba(120,80,220,0.3)',
+            color: 'rgba(206,198,236,0.7)',
+            fontSize: '0.65rem',
+            letterSpacing: '0.2em',
+            padding: '4px 12px',
+            cursor: 'pointer',
+            fontFamily: 'Courier New, monospace',
+            textTransform: 'uppercase',
+            borderRadius: 2,
+            transition: 'color 0.2s, border-color 0.2s',
+          }}
+          onMouseEnter={e => {
+            (e.target as HTMLElement).style.color = 'rgba(220,200,255,0.9)';
+            (e.target as HTMLElement).style.borderColor = 'rgba(160,120,255,0.6)';
+          }}
+          onMouseLeave={e => {
+            (e.target as HTMLElement).style.color = 'rgba(206,198,236,0.7)';
+            (e.target as HTMLElement).style.borderColor = 'rgba(120,80,220,0.3)';
+          }}
+        >
+          ✕ Close
+        </button>
+      </div>
+      <div className="content-scroll" style={{ flex: 1, overflowY: 'auto', paddingRight: 8 }}>
+        <SectionContent />
+      </div>
+    </>
+  );
+}
+
+function MobileNav({
+  active,
+  onNavigate,
+}: {
+  active: Section | null;
+  onNavigate: (s: Section) => void;
+}) {
+  return (
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateColumns: '1fr 1fr',
+        gap: 10,
+        width: '100%',
+        maxWidth: 340,
+        marginTop: 24,
+      }}
+    >
+      {NAV.map(s => (
+        <button
+          key={s}
+          onClick={() => onNavigate(s)}
+          className={`nav-label ${active === s ? 'active' : 'inactive'}`}
+          style={{
+            background: active === s ? 'rgba(90,50,180,0.25)' : 'rgba(40,20,80,0.25)',
+            border: `1px solid ${active === s ? 'rgba(160,120,255,0.55)' : 'rgba(120,80,220,0.3)'}`,
+            padding: '12px 8px',
+            borderRadius: 3,
+            textAlign: 'center',
+            fontFamily: 'Courier New, monospace',
+            appearance: 'none',
+            WebkitAppearance: 'none',
+          }}
+        >
+          {s}
+        </button>
+      ))}
+    </div>
+  );
+}
+
 export default function Home() {
   const [active, setActive] = useState<Section | null>(null);
+  const isMobile = useIsMobile();
 
   const handleNavigate = (s: Section) => {
     setActive(prev => (prev === s ? null : s));
   };
 
-  const SectionContent = active ? SECTION_COMPONENTS[active] : null;
+  if (isMobile) {
+    return (
+      <main
+        style={{
+          position: 'relative',
+          width: '100vw',
+          minHeight: '100dvh',
+          overflowX: 'hidden',
+          overflowY: 'auto',
+        }}
+      >
+        <StarField />
+        <div
+          style={{
+            position: 'relative',
+            zIndex: 2,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            padding: '32px 20px 48px',
+            minHeight: '100dvh',
+          }}
+        >
+          {!active && <Identity />}
+          <GameCube
+            active={active}
+            onNavigate={handleNavigate}
+            compact
+            showLabels={false}
+          />
+          <MobileNav active={active} onNavigate={handleNavigate} />
+
+          <AnimatePresence mode="wait">
+            {active && (
+              <motion.div
+                key={active}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 10 }}
+                transition={{ duration: 0.35, ease: 'easeOut' }}
+                style={{
+                  width: '100%',
+                  marginTop: 32,
+                  paddingTop: 24,
+                  borderTop: '1px solid rgba(100,70,180,0.25)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                }}
+              >
+                <SectionInner active={active} onClose={() => setActive(null)} />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main
@@ -90,45 +297,18 @@ export default function Home() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.4 }}
-                style={{ textAlign: 'center', marginBottom: 32 }}
               >
-                <div
-                  style={{
-                    fontSize: '2rem',
-                    fontWeight: 700,
-                    letterSpacing: '-0.02em',
-                    color: '#f0eaff',
-                    fontFamily: 'Courier New, monospace',
-                    lineHeight: 1.1,
-                  }}
-                >
-                  James Farris
-                </div>
-                <div
-                  style={{
-                    fontSize: '0.7rem',
-                    letterSpacing: '0.3em',
-                    color: 'rgba(206,198,236,0.8)',
-                    marginTop: 8,
-                    textTransform: 'uppercase',
-                  }}
-                >
-                  Full-Stack Developer
-                </div>
+                <Identity />
               </motion.div>
             )}
           </AnimatePresence>
 
-          <GameCube
-            active={active}
-            onNavigate={handleNavigate}
-            compact={false}
-          />
+          <GameCube active={active} onNavigate={handleNavigate} compact={false} />
         </motion.div>
 
         {/* Content panel */}
         <AnimatePresence mode="wait">
-          {active && SectionContent && (
+          {active && (
             <motion.div
               key={active}
               initial={{ opacity: 0, x: 60 }}
@@ -147,60 +327,7 @@ export default function Home() {
                 flexDirection: 'column',
               }}
             >
-              {/* Section header */}
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  marginBottom: 24,
-                  paddingBottom: 16,
-                  borderBottom: '1px solid rgba(100,70,180,0.2)',
-                }}
-              >
-                <div
-                  style={{
-                    fontSize: '1.1rem',
-                    color: '#f0eaff',
-                    fontFamily: 'Courier New, monospace',
-                    letterSpacing: '0.15em',
-                    textTransform: 'uppercase',
-                  }}
-                >
-                  {active}
-                </div>
-                <button
-                  onClick={() => setActive(null)}
-                  style={{
-                    background: 'none',
-                    border: '1px solid rgba(120,80,220,0.3)',
-                    color: 'rgba(180,150,255,0.5)',
-                    fontSize: '0.65rem',
-                    letterSpacing: '0.2em',
-                    padding: '4px 12px',
-                    cursor: 'pointer',
-                    fontFamily: 'Courier New, monospace',
-                    textTransform: 'uppercase',
-                    borderRadius: 2,
-                    transition: 'color 0.2s, border-color 0.2s',
-                  }}
-                  onMouseEnter={e => {
-                    (e.target as HTMLElement).style.color = 'rgba(220,200,255,0.8)';
-                    (e.target as HTMLElement).style.borderColor = 'rgba(160,120,255,0.6)';
-                  }}
-                  onMouseLeave={e => {
-                    (e.target as HTMLElement).style.color = 'rgba(180,150,255,0.5)';
-                    (e.target as HTMLElement).style.borderColor = 'rgba(120,80,220,0.3)';
-                  }}
-                >
-                  ✕ Close
-                </button>
-              </div>
-
-              {/* Scrollable content */}
-              <div className="content-scroll" style={{ flex: 1, overflowY: 'auto', paddingRight: 8 }}>
-                <SectionContent />
-              </div>
+              <SectionInner active={active} onClose={() => setActive(null)} />
             </motion.div>
           )}
         </AnimatePresence>

@@ -8,6 +8,7 @@ type Props = {
   active: Section | null;
   onNavigate: (s: Section) => void;
   compact?: boolean;
+  showLabels?: boolean;
 };
 
 // Each face is mounted on a real side of the cube that matches where its
@@ -36,7 +37,7 @@ const faceStyle = (rotY: number, rotX: number, size: number): React.CSSPropertie
   transform: `rotateY(${rotY}deg) rotateX(${rotX}deg) translateZ(${size / 2}px)`,
 });
 
-export default function GameCube({ active, onNavigate, compact = false }: Props) {
+export default function GameCube({ active, onNavigate, compact = false, showLabels = true }: Props) {
   const size = compact ? 100 : 220;
   const half = size / 2;
 
@@ -68,31 +69,41 @@ export default function GameCube({ active, onNavigate, compact = false }: Props)
     }
   }, [active, rotateX, rotateY]);
 
+  const sceneMargin = !showLabels
+    ? (compact ? '18px' : '28px')
+    : compact
+      ? '30px 26px'
+      : '62px 56px';
+
   return (
     <div className="flex flex-col items-center gap-0 select-none">
       {/* Top nav label */}
-      <NavLabel
-        label="ABOUT"
-        isActive={active === 'about' || active === null}
-        onClick={() => onNavigate('about')}
-        compact={compact}
-      />
+      {showLabels && (
+        <NavLabel
+          label="ABOUT"
+          isActive={active === 'about' || active === null}
+          onClick={() => onNavigate('about')}
+          compact={compact}
+        />
+      )}
 
       <div className="flex items-center gap-0">
         {/* Left label */}
-        <NavLabel
-          label="CONTACT"
-          isActive={active === 'contact'}
-          onClick={() => onNavigate('contact')}
-          compact={compact}
-          vertical
-          flip
-        />
+        {showLabels && (
+          <NavLabel
+            label="CONTACT"
+            isActive={active === 'contact'}
+            onClick={() => onNavigate('contact')}
+            compact={compact}
+            vertical
+            flip
+          />
+        )}
 
         {/* The 3D cube */}
         <div
           className="scene"
-          style={{ width: size, height: size, margin: compact ? '30px 26px' : '62px 56px' }}
+          style={{ width: size, height: size, margin: sceneMargin }}
         >
           <motion.div
             className="cube"
@@ -191,25 +202,29 @@ export default function GameCube({ active, onNavigate, compact = false }: Props)
         </div>
 
         {/* Right label */}
-        <NavLabel
-          label="PROJECTS"
-          isActive={active === 'projects'}
-          onClick={() => onNavigate('projects')}
-          compact={compact}
-          vertical
-        />
+        {showLabels && (
+          <NavLabel
+            label="PROJECTS"
+            isActive={active === 'projects'}
+            onClick={() => onNavigate('projects')}
+            compact={compact}
+            vertical
+          />
+        )}
       </div>
 
       {/* Bottom nav label */}
-      <NavLabel
-        label="SKILLS"
-        isActive={active === 'skills'}
-        onClick={() => onNavigate('skills')}
-        compact={compact}
-      />
+      {showLabels && (
+        <NavLabel
+          label="SKILLS"
+          isActive={active === 'skills'}
+          onClick={() => onNavigate('skills')}
+          compact={compact}
+        />
+      )}
 
       {/* GameCube-style status line */}
-      {!compact && (
+      {showLabels && !compact && (
         <div
           style={{
             marginTop: 20,
