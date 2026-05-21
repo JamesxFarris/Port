@@ -61,33 +61,6 @@ export default function About() {
       <div style={{ marginBottom: 28 }}>
         <div
           style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: 8,
-            fontSize: '0.62rem',
-            letterSpacing: '0.22em',
-            color: 'rgba(120,230,200,0.95)',
-            border: '1px solid rgba(100,220,180,0.4)',
-            background: 'rgba(40,120,100,0.12)',
-            padding: '5px 12px',
-            borderRadius: 999,
-            marginBottom: 16,
-            textTransform: 'uppercase',
-          }}
-        >
-          <span
-            style={{
-              width: 7,
-              height: 7,
-              borderRadius: '50%',
-              background: 'rgba(120,230,200,0.95)',
-              boxShadow: '0 0 8px rgba(120,230,200,0.9)',
-            }}
-          />
-          Available for full-stack roles — remote or relocation
-        </div>
-        <div
-          style={{
             fontSize: '0.65rem',
             letterSpacing: '0.3em',
             color: 'rgba(196,180,240,0.72)',
