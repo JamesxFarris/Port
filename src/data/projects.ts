@@ -113,23 +113,32 @@ export const experience: Role[] = [
     current: true,
     points: [
       'Designed, built, and maintain holidaysandsnorth.com, including hosting, DNS, and ongoing content updates.',
-      'Maintain the print server, Wi-Fi network, and DNS configuration; first-line tech support for staff hardware and connectivity issues.',
+      'Maintain and troubleshoot the print server, on-site Wi-Fi network, and DNS configuration that daily operations depend on.',
+      'First-line tech support for staff across hardware, peripherals, and connectivity issues.',
       'Handle reservations, check-ins, and guest issue resolution.',
     ],
   },
   {
     title: 'Operations Team Member',
     org: 'Target',
-    place: '',
-    dates: '2022 – 2025',
-    points: [],
+    place: 'Myrtle Beach, SC (part-time)',
+    dates: 'Jul 2022 – May 2025',
+    points: [
+      'Managed inventory flow and stocking to keep the floor guest-ready.',
+      'Helped guests find products and resolved issues on the spot.',
+      'Covered shifting priorities across departments during peak seasons.',
+    ],
   },
   {
     title: 'Shift Supervisor',
     org: 'CVS Health',
-    place: '',
-    dates: '2020 – 2021',
-    points: [],
+    place: 'Myrtle Beach, SC',
+    dates: 'Aug 2020 – Sep 2021',
+    points: [
+      'Ran store shifts as manager on duty, handling customer complaints and escalations.',
+      'Trained new hires on store systems, registers, and procedures.',
+      'Owned opening and closing procedures, cash handling, and scheduling coverage.',
+    ],
   },
   {
     title: 'Technical Support Specialist',
@@ -137,16 +146,22 @@ export const experience: Role[] = [
     place: 'Remote (contract)',
     dates: 'Sep 2019 – Mar 2020',
     points: [
-      'Tier 1 and Tier 2 support for the ACT WorkKeys testing platform; resolved data integrity issues and managed student data seeding.',
-      'Worked tickets in Salesforce Service Cloud and maintained internal SharePoint training docs.',
+      'Tier 1 and Tier 2 Windows support for the ACT WorkKeys testing platform in a high-volume call environment.',
+      'Owned cases from open to close in Salesforce Service Cloud and ServiceNow, documenting troubleshooting and escalating non-routine issues.',
+      'Managed user accounts, SSO access, and password resets for platform users.',
+      'Resolved data integrity issues, seeded student data, and maintained the SharePoint documentation the team relied on.',
     ],
   },
   {
     title: 'Manager',
     org: 'Rite Aid',
-    place: '',
-    dates: '2018 – 2019',
-    points: [],
+    place: 'Luzerne, PA',
+    dates: 'Sep 2018 – Aug 2019',
+    points: [
+      'Promoted from front end associate to manager within four months.',
+      'Trained and developed staff on store systems and procedures.',
+      'Oversaw inventory, scheduling, and store performance, and handled customer escalations.',
+    ],
   },
 ];
 
@@ -161,5 +176,5 @@ export const skills = {
   Frameworks: ['Next.js', 'React', 'React Native', 'Node.js', 'Express', 'Prisma'],
   'Data & Cloud': ['PostgreSQL', 'MongoDB', 'Vercel', 'Railway', 'Linux'],
   'Tools & APIs': ['Stripe', 'Google Maps & Places APIs', 'REST APIs', 'Git', 'GitHub'],
-  'IT & Support': ['DNS', 'Wi-Fi networking', 'Print servers', 'Windows', 'Linux', 'Tier 1/2 support', 'Salesforce Service Cloud', 'ITIL 4'],
+  'IT & Support': ['DNS', 'Wi-Fi networking', 'Print servers', 'Windows', 'Linux', 'Tier 1/2 support', 'User accounts & SSO', 'Salesforce Service Cloud', 'ServiceNow', 'ITIL 4'],
 };
