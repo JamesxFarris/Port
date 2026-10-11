@@ -133,7 +133,7 @@ export default function Home() {
           </section>
         ))}
         <footer style={{ marginTop: 72, fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-          Built with Next.js by James Farris. The cube is a nod to the GameCube menu.
+          Built with Next.js by James Farris.
         </footer>
       </div>
     </main>
