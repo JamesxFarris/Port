@@ -43,7 +43,7 @@ export const projects: Project[] = [
       'Marketing and portfolio site for J2 Development, a web development studio. Designed and built to be lightweight — no framework overhead on a purely informational site.',
     tech: ['HTML', 'CSS', 'JavaScript'],
     github: 'https://github.com/JamesxFarris/J-Development',
-    live: 'https://jamesxfarris.github.io/J-Development/',
+    live: 'https://j2webdevelopment.com/',
     screenshot: '/photos/J2.png',
     accentColor: '#1D4ED8',
   },
