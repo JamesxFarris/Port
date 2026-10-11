@@ -9,7 +9,7 @@ const inputStyle: React.CSSProperties = {
   color: '#f0eaff',
   padding: '10px 14px',
   fontSize: '0.82rem',
-  fontFamily: 'Courier New, monospace',
+  fontFamily: 'var(--font-mono), monospace',
   outline: 'none',
   borderRadius: 2,
   transition: 'border-color 0.2s',
@@ -68,7 +68,7 @@ export default function Contact() {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          style={{ color: 'rgba(100,220,180,0.8)', fontSize: '0.85rem', fontFamily: 'Courier New, monospace', lineHeight: 1.8 }}
+          style={{ color: 'rgba(100,220,180,0.8)', fontSize: '0.85rem', fontFamily: 'var(--font-mono), monospace', lineHeight: 1.8 }}
         >
           <div style={{ fontSize: '1.5rem', marginBottom: 12 }}>✓</div>
           <div>Message sent.</div>
@@ -137,7 +137,7 @@ export default function Contact() {
               letterSpacing: '0.25em',
               textTransform: 'uppercase',
               cursor: state === 'sending' ? 'default' : 'pointer',
-              fontFamily: 'Courier New, monospace',
+              fontFamily: 'var(--font-mono), monospace',
               transition: 'background 0.2s, border-color 0.2s',
               borderRadius: 2,
               alignSelf: 'flex-start',

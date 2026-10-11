@@ -7,15 +7,17 @@ import About from '@/components/sections/About';
 import Projects from '@/components/sections/Projects';
 import Skills from '@/components/sections/Skills';
 import Contact from '@/components/sections/Contact';
+import Experience from '@/components/sections/Experience';
 
 const SECTION_COMPONENTS: Record<Section, React.ComponentType> = {
   about: About,
   projects: Projects,
   skills: Skills,
   contact: Contact,
+  experience: Experience,
 };
 
-const NAV: Section[] = ['about', 'projects', 'skills', 'contact'];
+const NAV: Section[] = ['about', 'projects', 'experience', 'skills', 'contact'];
 
 function useIsMobile() {
   const [mobile, setMobile] = useState(false);
@@ -29,31 +31,53 @@ function useIsMobile() {
   return mobile;
 }
 
-function Identity() {
+function Identity({ compact = false }: { compact?: boolean }) {
   return (
-    <div style={{ textAlign: 'center', marginBottom: 32 }}>
-      <div
+    <div style={{ textAlign: 'center', marginBottom: compact ? 24 : 28, maxWidth: 460 }}>
+      <h1
         style={{
-          fontSize: '2rem',
-          fontWeight: 700,
+          fontSize: compact ? '1.9rem' : '2.3rem',
+          fontWeight: 600,
           letterSpacing: '-0.02em',
-          color: '#f0eaff',
-          fontFamily: 'Courier New, monospace',
+          color: '#f4efff',
+          fontFamily: 'var(--font-mono), monospace',
           lineHeight: 1.1,
+          margin: 0,
         }}
       >
         James Farris
-      </div>
+      </h1>
       <div
         style={{
-          fontSize: '0.7rem',
-          letterSpacing: '0.3em',
-          color: 'rgba(206,198,236,0.8)',
-          marginTop: 8,
-          textTransform: 'uppercase',
+          fontSize: '0.9rem',
+          color: 'rgba(214,206,244,0.85)',
+          marginTop: 6,
+          fontFamily: 'var(--font-mono), monospace',
         }}
       >
-        Full-Stack Developer
+        Full-stack developer in Conway, SC
+      </div>
+      <p
+        style={{
+          fontSize: compact ? '0.95rem' : '1rem',
+          lineHeight: 1.55,
+          color: 'var(--platinum)',
+          margin: '14px auto 0',
+        }}
+      >
+        I build and run production web apps, including a 3,000+ listing directory with
+        Stripe payments and the booking site for a Myrtle Beach hotel.
+      </p>
+      <div style={{ display: 'flex', gap: 8, justifyContent: 'center', flexWrap: 'wrap', marginTop: 16 }}>
+        <a className="pill-link primary" href="/resume.pdf" download>
+          Resume
+        </a>
+        <a className="pill-link" href="https://github.com/JamesxFarris" target="_blank" rel="noopener noreferrer">
+          GitHub
+        </a>
+        <a className="pill-link" href="https://www.linkedin.com/in/james-farris-9b4b33166/" target="_blank" rel="noopener noreferrer">
+          LinkedIn
+        </a>
       </div>
     </div>
   );
@@ -83,7 +107,7 @@ function SectionInner({
           style={{
             fontSize: '1.1rem',
             color: '#f0eaff',
-            fontFamily: 'Courier New, monospace',
+            fontFamily: 'var(--font-mono), monospace',
             letterSpacing: '0.15em',
             textTransform: 'uppercase',
           }}
@@ -100,7 +124,7 @@ function SectionInner({
             letterSpacing: '0.2em',
             padding: '4px 12px',
             cursor: 'pointer',
-            fontFamily: 'Courier New, monospace',
+            fontFamily: 'var(--font-mono), monospace',
             textTransform: 'uppercase',
             borderRadius: 2,
             transition: 'color 0.2s, border-color 0.2s',
@@ -154,7 +178,8 @@ function MobileNav({
             padding: '12px 8px',
             borderRadius: 3,
             textAlign: 'center',
-            fontFamily: 'Courier New, monospace',
+            fontFamily: 'var(--font-mono), monospace',
+            gridColumn: s === NAV[NAV.length - 1] ? '1 / -1' : undefined,
             appearance: 'none',
             WebkitAppearance: 'none',
           }}
@@ -197,7 +222,7 @@ export default function Home() {
             minHeight: '100dvh',
           }}
         >
-          {!active && <Identity />}
+          {!active && <Identity compact />}
           <GameCube
             active={active}
             onNavigate={handleNavigate}

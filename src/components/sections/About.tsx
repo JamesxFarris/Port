@@ -5,50 +5,9 @@ const bio = [
   "Self-taught full-stack developer in Conway, South Carolina — I design, build, and ship complete products, not just features.",
   "Two production sites are live and serving real users today, including a 3,000+ listing directory with payments, search, and SEO built end to end.",
   "Comfortable across the stack: TypeScript and React on the front; Node, PostgreSQL, and Prisma on the back — deployed and maintained in production.",
+  "I'm also the on-site IT person at my day job: Wi-Fi, DNS, the print server, and first-line support for staff.",
   "Finishing a B.S. in Computer Science at WGU and adding Java to a primarily TypeScript toolkit.",
 ];
-
-const linkStyle: React.CSSProperties = {
-  display: 'inline-flex',
-  alignItems: 'center',
-  gap: 8,
-  padding: '8px 20px',
-  border: '1px solid rgba(120,80,220,0.4)',
-  color: 'rgba(200,180,255,0.8)',
-  fontSize: '0.72rem',
-  letterSpacing: '0.2em',
-  textTransform: 'uppercase',
-  textDecoration: 'none',
-  background: 'rgba(80,40,160,0.1)',
-  transition: 'border-color 0.2s, color 0.2s',
-  borderRadius: 2,
-  cursor: 'pointer',
-  fontFamily: 'Courier New, monospace',
-};
-
-function HoverLink({ href, download, children }: { href: string; download?: boolean; children: React.ReactNode }) {
-  return (
-    <a
-      href={href}
-      target={download ? undefined : '_blank'}
-      rel={download ? undefined : 'noopener noreferrer'}
-      download={download}
-      style={linkStyle}
-      onMouseEnter={e => {
-        const el = e.currentTarget;
-        el.style.borderColor = 'rgba(160,120,255,0.8)';
-        el.style.color = '#fff';
-      }}
-      onMouseLeave={e => {
-        const el = e.currentTarget;
-        el.style.borderColor = 'rgba(120,80,220,0.4)';
-        el.style.color = 'rgba(200,180,255,0.8)';
-      }}
-    >
-      {children}
-    </a>
-  );
-}
 
 export default function About() {
   return (
@@ -77,7 +36,7 @@ export default function About() {
             color: '#f0eaff',
             lineHeight: 1.1,
             letterSpacing: '-0.02em',
-            fontFamily: 'Courier New, monospace',
+            fontFamily: 'var(--font-mono), monospace',
           }}
         >
           James Farris
@@ -93,9 +52,9 @@ export default function About() {
             transition={{ delay: 0.1 + i * 0.08, duration: 0.35 }}
             style={{
               color: i === 0 ? 'rgba(232,226,250,0.95)' : 'rgba(216,210,236,0.85)',
-              fontSize: i === 0 ? '1rem' : '0.9rem',
-              lineHeight: 1.75,
-              fontFamily: 'Courier New, monospace',
+              fontSize: i === 0 ? '1.05rem' : '0.95rem',
+              lineHeight: 1.65,
+              maxWidth: '64ch',
             }}
           >
             {line}
@@ -104,15 +63,15 @@ export default function About() {
       </div>
 
       <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-        <HoverLink href="/resume.pdf" download>
-          Download Resume
-        </HoverLink>
-        <HoverLink href="https://github.com/JamesxFarris">
+        <a className="pill-link primary" href="/resume.pdf" download>
+          Download resume
+        </a>
+        <a className="pill-link" href="https://github.com/JamesxFarris" target="_blank" rel="noopener noreferrer">
           GitHub
-        </HoverLink>
-        <HoverLink href="https://www.linkedin.com/in/james-farris-9b4b33166/">
+        </a>
+        <a className="pill-link" href="https://www.linkedin.com/in/james-farris-9b4b33166/" target="_blank" rel="noopener noreferrer">
           LinkedIn
-        </HoverLink>
+        </a>
       </div>
     </motion.div>
   );

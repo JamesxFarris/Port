@@ -3,7 +3,10 @@ import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { projects, type Project } from '@/data/projects';
 
-function Thumbnail({ p }: { p: Project }) {
+const featured = projects.filter(p => p.featured);
+const more = projects.filter(p => !p.featured);
+
+function Screenshot({ p, ratio }: { p: Project; ratio: string }) {
   const [failed, setFailed] = useState(false);
   const href = p.live ?? p.github;
 
@@ -12,147 +15,195 @@ function Thumbnail({ p }: { p: Project }) {
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      title={p.live ? 'View live site' : 'View on GitHub'}
+      aria-label={`${p.name}: ${p.live ? 'open live site' : 'view on GitHub'}`}
       style={{
-        flexShrink: 0,
-        width: '100%',
-        maxWidth: 260,
-        aspectRatio: '260 / 168',
         display: 'block',
-        borderRadius: 2,
+        width: '100%',
+        aspectRatio: ratio,
         overflow: 'hidden',
-        border: '1px solid rgba(120,80,220,0.2)',
-        transition: 'border-color 0.2s',
+        borderRadius: 3,
+        border: `1px solid ${p.accentColor}66`,
+        background: `linear-gradient(135deg, ${p.accentColor}30 0%, ${p.accentColor}10 100%)`,
       }}
-      onMouseEnter={e => ((e.currentTarget as HTMLAnchorElement).style.borderColor = 'rgba(160,120,255,0.5)')}
-      onMouseLeave={e => ((e.currentTarget as HTMLAnchorElement).style.borderColor = 'rgba(120,80,220,0.2)')}
     >
-      {p.screenshot && !failed ? (
+      {p.screenshot && !failed && (
         <img
           src={p.screenshot}
-          alt={`${p.name} screenshot`}
+          alt=""
           onError={() => setFailed(true)}
-          style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top', display: 'block', opacity: 0.88 }}
+          style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top', display: 'block' }}
         />
-      ) : (
-        /* Placeholder — shows until screenshot file is dropped in */
-        <div
-          style={{
-            width: '100%',
-            height: '100%',
-            background: `linear-gradient(135deg, ${p.accentColor}28 0%, ${p.accentColor}10 100%)`,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: '1rem',
-            color: `${p.accentColor}88`,
-          }}
-        >
-          ↗
-        </div>
       )}
     </a>
   );
 }
 
+function Links({ p }: { p: Project }) {
+  const base: React.CSSProperties = {
+    fontFamily: 'var(--font-mono), monospace',
+    fontSize: '0.72rem',
+    textDecoration: 'none',
+    padding: '3px 9px',
+    borderRadius: 3,
+  };
+  return (
+    <div style={{ display: 'flex', gap: 6, flexShrink: 0 }}>
+      {p.live && (
+        <a
+          href={p.live}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ ...base, color: 'var(--live)', border: '1px solid rgba(79,209,189,0.4)' }}
+        >
+          Live site
+        </a>
+      )}
+      <a
+        href={p.github}
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{ ...base, color: 'rgba(200,180,255,0.85)', border: '1px solid rgba(120,80,220,0.4)' }}
+      >
+        Code
+      </a>
+    </div>
+  );
+}
+
+function Tech({ p }: { p: Project }) {
+  return (
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
+      {p.tech.map(t => (
+        <span
+          key={t}
+          style={{
+            fontSize: '0.7rem',
+            color: 'rgba(224,218,246,0.88)',
+            background: `${p.accentColor}26`,
+            border: `1px solid ${p.accentColor}55`,
+            padding: '1px 8px',
+            borderRadius: 3,
+          }}
+        >
+          {t}
+        </span>
+      ))}
+    </div>
+  );
+}
+
+function Header({ p }: { p: Project }) {
+  return (
+    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 10, flexWrap: 'wrap' }}>
+      <div>
+        <h3 style={{ fontFamily: 'var(--font-mono), monospace', fontSize: '1rem', fontWeight: 600, color: '#f4efff', margin: 0 }}>
+          {p.name}
+        </h3>
+        <div style={{ fontSize: '0.78rem', color: 'rgba(200,190,236,0.75)', marginTop: 2 }}>
+          {p.tagline}, {p.year}
+        </div>
+      </div>
+      <Links p={p} />
+    </div>
+  );
+}
+
+const CASE_ROWS = [
+  ['Problem', 'problem'],
+  ['What I built', 'built'],
+  ['Result', 'result'],
+] as const;
+
+function FeaturedCard({ p, i }: { p: Project; i: number }) {
+  const cs = p.caseStudy;
+  return (
+    <motion.article
+      className="memory-card"
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: i * 0.08, duration: 0.3 }}
+      style={{ padding: 16, ['--accent' as string]: p.accentColor } as React.CSSProperties}
+    >
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 16 }}>
+        <Screenshot p={p} ratio="16 / 10" />
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <Header p={p} />
+          {cs && (
+            <dl style={{ display: 'flex', flexDirection: 'column', gap: 8, margin: 0 }}>
+              {CASE_ROWS.map(([label, key]) => (
+                <div key={key}>
+                  <dt
+                    style={{
+                      fontFamily: 'var(--font-mono), monospace',
+                      fontSize: '0.72rem',
+                      color: key === 'result' ? 'var(--spice)' : 'rgba(196,182,244,0.8)',
+                      marginBottom: 1,
+                    }}
+                  >
+                    {label}
+                  </dt>
+                  <dd style={{ margin: 0, fontSize: '0.88rem', lineHeight: 1.55, color: 'rgba(232,228,246,0.93)' }}>
+                    {cs[key]}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          )}
+        </div>
+      </div>
+      <div style={{ marginTop: 14 }}>
+        <Tech p={p} />
+      </div>
+    </motion.article>
+  );
+}
+
+function CompactCard({ p, i }: { p: Project; i: number }) {
+  return (
+    <motion.article
+      className="memory-card"
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.16 + i * 0.06, duration: 0.3 }}
+      style={{ padding: 12, ['--accent' as string]: p.accentColor } as React.CSSProperties}
+    >
+      <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap' }}>
+        <div style={{ width: 150, flexShrink: 0, maxWidth: '100%' }}>
+          <Screenshot p={p} ratio="16 / 10" />
+        </div>
+        <div style={{ flex: 1, minWidth: 220, display: 'flex', flexDirection: 'column', gap: 8 }}>
+          <Header p={p} />
+          <p style={{ fontSize: '0.84rem', lineHeight: 1.55, color: 'rgba(226,222,242,0.9)', margin: 0 }}>{p.description}</p>
+          <Tech p={p} />
+        </div>
+      </div>
+    </motion.article>
+  );
+}
+
+const groupHeading: React.CSSProperties = {
+  fontFamily: 'var(--font-mono), monospace',
+  fontSize: '0.82rem',
+  fontWeight: 500,
+  color: 'rgba(206,196,244,0.85)',
+  margin: '0 0 12px',
+};
+
 export default function Projects() {
   return (
-    <motion.div
-      className="content-scroll"
-      initial={{ opacity: 0, x: 40 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.4, ease: 'easeOut' }}
-      style={{ height: '100%', paddingRight: 4 }}
-    >
-      <div
-        style={{
-          fontSize: '0.65rem',
-          letterSpacing: '0.3em',
-          color: 'rgba(196,180,240,0.72)',
-          marginBottom: 20,
-          textTransform: 'uppercase',
-        }}
-      >
-        {projects.length} Projects
-      </div>
-
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-        {projects.map((p, i) => (
-          <motion.div
-            key={p.id}
-            className="memory-card"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.06, duration: 0.3 }}
-            style={{ padding: '12px 14px' }}
-          >
-            {/* Top accent bar */}
-            <div
-              style={{
-                position: 'absolute',
-                top: 0, left: 0, right: 0,
-                height: 2,
-                background: p.accentColor,
-                opacity: 0.75,
-              }}
-            />
-
-            <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap' }}>
-              <Thumbnail p={p} />
-
-              <div style={{ flex: 1, minWidth: 220 }}>
-                {/* Header row */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 4 }}>
-                  <div>
-                    <div style={{ fontSize: '0.88rem', color: '#f0eaff', fontFamily: 'Courier New, monospace', fontWeight: 600, letterSpacing: '0.04em' }}>
-                      {p.name}
-                    </div>
-                    <div style={{ fontSize: '0.62rem', color: 'rgba(190,172,238,0.72)', letterSpacing: '0.18em', textTransform: 'uppercase', marginTop: 1 }}>
-                      {p.tagline}
-                    </div>
-                  </div>
-
-                  <div style={{ display: 'flex', gap: 6, alignItems: 'center', flexShrink: 0, marginLeft: 8 }}>
-                    {p.live && (
-                      <a
-                        href={p.live}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        style={{ fontSize: '0.58rem', letterSpacing: '0.12em', color: 'rgba(100,220,200,0.8)', textDecoration: 'none', textTransform: 'uppercase', border: '1px solid rgba(100,220,200,0.3)', padding: '2px 7px', borderRadius: 2 }}
-                      >
-                        Live
-                      </a>
-                    )}
-                    <a
-                      href={p.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{ fontSize: '0.58rem', letterSpacing: '0.12em', color: 'rgba(180,150,255,0.6)', textDecoration: 'none', textTransform: 'uppercase', border: '1px solid rgba(120,80,220,0.3)', padding: '2px 7px', borderRadius: 2 }}
-                    >
-                      Code
-                    </a>
-                  </div>
-                </div>
-
-                <p style={{ fontSize: '0.8rem', color: 'rgba(220,214,238,0.92)', lineHeight: 1.65, marginBottom: 8, fontFamily: 'Courier New, monospace' }}>
-                  {p.description}
-                </p>
-
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
-                  {p.tech.map(t => (
-                    <span
-                      key={t}
-                      style={{ fontSize: '0.58rem', letterSpacing: '0.08em', color: 'rgba(208,198,246,0.82)', background: 'rgba(80,40,160,0.2)', border: '1px solid rgba(120,90,210,0.3)', padding: '1px 7px', borderRadius: 2 }}
-                    >
-                      {t}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        ))}
-      </div>
-    </motion.div>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 28, paddingBottom: 8 }}>
+      <section>
+        <h2 style={groupHeading}>Production work</h2>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+          {featured.map((p, i) => <FeaturedCard key={p.id} p={p} i={i} />)}
+        </div>
+      </section>
+      <section>
+        <h2 style={groupHeading}>More projects</h2>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+          {more.map((p, i) => <CompactCard key={p.id} p={p} i={i} />)}
+        </div>
+      </section>
+    </div>
   );
 }

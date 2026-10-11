@@ -3,10 +3,11 @@ import { motion } from 'framer-motion';
 import { skills } from '@/data/projects';
 
 const CATEGORY_COLORS: Record<string, string> = {
-  Languages: '#7C3AED',
-  Frameworks: '#0E7490',
-  'Data & Cloud': '#0F766E',
-  'Tools & APIs': '#9D174D',
+  Languages: '#8B5CF6',
+  Frameworks: '#0EA5C6',
+  'Data & Cloud': '#14B8A6',
+  'Tools & APIs': '#DB2777',
+  'IT & Support': '#F39A3D',
 };
 
 export default function Skills() {
@@ -76,7 +77,7 @@ export default function Skills() {
                     fontSize: '0.78rem',
                     letterSpacing: '0.05em',
                     borderRadius: 2,
-                    fontFamily: 'Courier New, monospace',
+                    fontFamily: 'var(--font-mono), monospace',
                   }}
                 >
                   {skill}

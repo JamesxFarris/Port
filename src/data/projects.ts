@@ -8,11 +8,22 @@ export type Project = {
   live: string | null;
   screenshot: string | null;
   accentColor: string;
+  year: string;
+  /** Featured projects get a full case-study card. */
+  featured?: boolean;
+  caseStudy?: { problem: string; built: string; result: string };
 };
 
 export const projects: Project[] = [
   {
     id: 'inklink',
+    year: '2024 – now',
+    featured: true,
+    caseStudy: {
+      problem: 'Finding a tattoo shop means digging through scattered listings with stale hours and no way to compare nearby options.',
+      built: 'A searchable directory of 3,000+ U.S. shops with map discovery, "Open now" status calculated across time zones, duplicate detection on new submissions, and Stripe subscriptions for shop owners.',
+      result: 'Live in production with ~400 monthly users, indexed through structured-data SEO.',
+    },
     name: 'InkLink',
     tagline: 'Tattoo Shop Directory',
     description:
@@ -25,6 +36,13 @@ export const projects: Project[] = [
   },
   {
     id: 'hsn',
+    year: '2025',
+    featured: true,
+    caseStudy: {
+      problem: 'A family-owned boardwalk hotel needed a site guests could actually book from, and that staff could keep current without an agency.',
+      built: 'A fast, framework-free site with a third-party reservation engine, an event calendar filtered by month, and responsive galleries for 15+ room types.',
+      result: "The hotel's main booking site. I host it, manage its DNS, and ship content updates as part of my job there.",
+    },
     name: 'Holiday Sands North',
     tagline: 'Oceanfront Hotel Website',
     description:
@@ -37,6 +55,7 @@ export const projects: Project[] = [
   },
   {
     id: 'j2dev',
+    year: '2025',
     name: 'J2 Development',
     tagline: 'Web Studio Site',
     description:
@@ -49,6 +68,7 @@ export const projects: Project[] = [
   },
   {
     id: 'castle-clicker',
+    year: '2025',
     name: 'Castle Clicker',
     tagline: 'Browser Incremental Game',
     description:
@@ -61,6 +81,7 @@ export const projects: Project[] = [
   },
   {
     id: 'somniary',
+    year: '2023',
     name: 'Somniary',
     tagline: 'Dream Journal App',
     description:
@@ -71,18 +92,49 @@ export const projects: Project[] = [
     screenshot: '/photos/Somniary.png',
     accentColor: '#1E3A5F',
   },
+];
+
+export type Role = {
+  title: string;
+  org: string;
+  place: string;
+  dates: string;
+  current?: boolean;
+  points: string[];
+};
+
+export const experience: Role[] = [
   {
-    id: 'trivia-feev',
-    name: 'feev.io Trivia',
-    tagline: 'Multiplayer Trivia Platform',
-    description:
-      'Trivia platform built with a team of five over two Agile sprints. Multiple categories, leaderboards, user auth. Used GraphQL + Apollo as a deliberate alternative to REST — scoped and shipped within the sprint.',
-    tech: ['React', 'GraphQL', 'Apollo', 'MongoDB', 'Node.js', 'Express'],
-    github: 'https://github.com/Cat-Scratch-Feev/trivia-feev',
-    live: 'https://trivia-feev-production.up.railway.app/',
-    screenshot: '/photos/Feev.io.png',
-    accentColor: '#14532D',
+    title: 'Front Desk & Web Developer',
+    org: 'Holiday Sands North',
+    place: 'Myrtle Beach, SC',
+    dates: 'Apr 2025 – now',
+    current: true,
+    points: [
+      "Designed, built, and maintain holidaysandsnorth.com, including hosting, DNS, and ongoing content updates.",
+      'Maintain the print server, Wi-Fi network, and DNS configuration; first-line tech support for staff hardware and connectivity issues.',
+      'Handle reservations, check-ins, and guest issue resolution.',
+    ],
   },
+  {
+    title: 'Technical Support Specialist',
+    org: 'Startek / ACT WorkKeys',
+    place: 'Remote (contract)',
+    dates: 'Sep 2019 – Mar 2020',
+    points: [
+      'Tier 1 and Tier 2 support for the ACT WorkKeys testing platform; resolved data integrity issues and managed student data seeding.',
+      'Worked tickets in Salesforce Service Cloud and maintained internal SharePoint training docs.',
+    ],
+  },
+];
+
+export const earlierRoles =
+  'Operations at Target (2022–2025), shift supervisor at CVS Health (2020–2021), and store manager at Rite Aid (2018–2019): years of customer-facing, supervisory, and operations work.';
+
+export const education = [
+  { name: 'B.S. Computer Science', org: 'Western Governors University', date: 'Expected 2027' },
+  { name: 'ITIL 4 Foundation', org: 'PeopleCert', date: 'Mar 2026' },
+  { name: 'Full Stack Web Development Certificate', org: 'University of Minnesota', date: 'Aug 2023' },
 ];
 
 export const skills = {
@@ -90,4 +142,5 @@ export const skills = {
   Frameworks: ['Next.js', 'React', 'React Native', 'Node.js', 'Express', 'Prisma'],
   'Data & Cloud': ['PostgreSQL', 'MongoDB', 'Vercel', 'Railway', 'Linux'],
   'Tools & APIs': ['Stripe', 'Google Maps & Places APIs', 'REST APIs', 'Git', 'GitHub'],
+  'IT & Support': ['DNS', 'Wi-Fi networking', 'Print servers', 'Windows', 'Linux', 'Tier 1/2 support', 'Salesforce Service Cloud', 'ITIL 4'],
 };

@@ -2,7 +2,7 @@
 import { motion, useMotionValue, useAnimationFrame, animate } from 'framer-motion';
 import { useEffect, useState } from 'react';
 
-export type Section = 'about' | 'projects' | 'skills' | 'contact';
+export type Section = 'about' | 'projects' | 'skills' | 'contact' | 'experience';
 
 type Props = {
   active: Section | null;
@@ -13,7 +13,8 @@ type Props = {
 
 // Each face is mounted on a real side of the cube that matches where its
 // nav label sits: ABOUT on top, SKILLS on bottom, CONTACT/PROJECTS on the
-// sides. `cube` is the cube rotation that brings that face flat to the viewer.
+// sides, EXPERIENCE on the back. `cube` is the cube rotation that brings
+// that face flat to the viewer.
 const FACES: {
   face: Section;
   label: string;
@@ -25,6 +26,7 @@ const FACES: {
   { face: 'skills',   label: 'SKILLS',   rotY: 0,   rotX: -90, cube: { rotX: 90,  rotY: 0 } },
   { face: 'projects', label: 'PROJECTS', rotY: 90,  rotX: 0,   cube: { rotX: 0,   rotY: -90 } },
   { face: 'contact',  label: 'CONTACT',  rotY: -90, rotX: 0,   cube: { rotX: 0,   rotY: 90 } },
+  { face: 'experience', label: 'EXPERIENCE', rotY: 180, rotX: 0, cube: { rotX: 0, rotY: 180 } },
 ];
 
 // Resting pose when nothing is selected — a gentle 3/4 view of the front face.
@@ -47,22 +49,6 @@ const ASCII_CAT = [
   "         ; '   : :`-:     _.`* ;",
   "      .*' /  .*' ; .*`- +'  `*'",
   "      `*-*   `*-*  `*-*'",
-].join('\n');
-
-const ASCII_BACK = [
-  '             __.-/|',
-  "             \\`o_O'",
-  '              =( )=  +-------+',
-  '                U|   | JAMES |',
-  '      /\\  /\\   / |   +-------+',
-  '     ) /^\\) ^\\/ _)\\     |',
-  '     )   /^\\/   _) \\    |',
-  '     )   _ /  / _)  \\___|_',
-  ' /\\  )/\\/ ||  | )_)\\___,|))',
-  '<  >      |(,,) )__)    |',
-  ' ||      /    \\)___)\\',
-  ' | \\____(      )___) )____',
-  '  \\______(_______;;;)__;;;)',
 ].join('\n');
 
 function AsciiArt({
@@ -120,7 +106,7 @@ function AsciiArt({
       style={{
         margin: 0,
         color,
-        fontFamily: 'Courier New, monospace',
+        fontFamily: 'var(--font-mono), monospace',
         fontSize,
         lineHeight,
         whiteSpace: 'pre',
@@ -176,7 +162,7 @@ export default function GameCube({ active, onNavigate, compact = false, showLabe
     ? (compact ? '18px' : '28px')
     : compact
       ? '30px 26px'
-      : '62px 56px';
+      : '44px 56px';
 
   const Root = showLabels ? 'nav' : 'div';
 
@@ -239,7 +225,7 @@ export default function GameCube({ active, onNavigate, compact = false, showLabe
                       : 'rgba(180,150,255,0.35)',
                     fontSize: compact ? '0.55rem' : '0.85rem',
                     letterSpacing: '0.2em',
-                    fontFamily: 'Courier New, monospace',
+                    fontFamily: 'var(--font-mono), monospace',
                     textTransform: 'uppercase',
                     textShadow:
                       active === face
@@ -292,30 +278,13 @@ export default function GameCube({ active, onNavigate, compact = false, showLabe
                     color: 'rgba(180,150,255,0.3)',
                     fontSize: '0.5rem',
                     letterSpacing: '0.35em',
-                    fontFamily: 'Courier New, monospace',
+                    fontFamily: 'var(--font-mono), monospace',
                   }}
                 >
                   ◆
                 </span>
               ) : (
                 <AsciiArt art={ASCII_CAT} size={size} color="rgba(190,160,255,0.42)" />
-              )}
-            </div>
-            {/* Back face — decorative */}
-            <div
-              className="cube-face"
-              style={{
-                position: 'absolute',
-                width: size, height: size,
-                transform: `rotateY(180deg) translateZ(${half}px)`,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                opacity: 0.55,
-              }}
-            >
-              {!compact && (
-                <AsciiArt art={ASCII_BACK} size={size} color="rgba(150,210,180,0.5)" />
               )}
             </div>
           </motion.div>
@@ -343,21 +312,16 @@ export default function GameCube({ active, onNavigate, compact = false, showLabe
         />
       )}
 
-      {/* GameCube-style status line */}
-      {showLabels && !compact && (
-        <div
-          style={{
-            marginTop: 20,
-            color: 'rgba(180,150,255,0.45)',
-            fontSize: '0.7rem',
-            letterSpacing: '0.2em',
-            display: 'flex',
-            alignItems: 'center',
-            gap: 8,
-          }}
-        >
-          <span style={{ fontSize: '0.9rem' }}>⊙</span>
-          <span>MENU SELECTION</span>
+      {/* Back face: the cube spins around to reach it */}
+      {showLabels && (
+        <div style={{ marginTop: compact ? 4 : 8, display: 'flex', alignItems: 'center', gap: 6 }}>
+          <span aria-hidden="true" style={{ color: 'rgba(243,154,61,0.75)', fontSize: '0.9rem' }}>⊙</span>
+          <NavLabel
+            label="EXPERIENCE"
+            isActive={active === 'experience'}
+            onClick={() => onNavigate('experience')}
+            compact={compact}
+          />
         </div>
       )}
     </Root>

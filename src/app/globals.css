@@ -9,6 +9,10 @@
   --text-primary: #f0eaff;
   --text-dim: rgba(200, 180, 255, 0.5);
   --border: rgba(150, 120, 255, 0.2);
+  /* GameCube "Spice" orange: the one warm highlight, used sparingly */
+  --spice: #f39a3d;
+  --platinum: #dfe1ea;
+  --live: #4fd1bd;
 }
 
 * {
@@ -20,7 +24,7 @@
 body {
   background: var(--bg);
   color: var(--text-primary);
-  font-family: 'Courier New', Courier, monospace;
+  font-family: var(--font-body), system-ui, sans-serif;
   overflow: hidden;
   height: 100dvh;
   width: 100vw;
@@ -135,17 +139,48 @@ body {
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.memory-card:hover {
-  border-color: rgba(120, 80, 220, 0.7);
-  box-shadow: 0 0 20px rgba(100, 50, 200, 0.2);
-}
-
 .memory-card::before {
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0;
   height: 3px;
-  background: linear-gradient(90deg, var(--cube-purple), var(--cube-teal));
+  background: var(--accent, linear-gradient(90deg, var(--cube-purple), var(--cube-teal)));
+}
+
+.memory-card:hover {
+  border-color: color-mix(in srgb, var(--accent, #7850dc) 70%, white 10%);
+  box-shadow: 0 0 24px color-mix(in srgb, var(--accent, #6432c8) 30%, transparent);
+}
+
+/* Shared link button used on the landing screen and About */
+.pill-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 18px;
+  border: 1px solid rgba(120, 80, 220, 0.45);
+  color: rgba(214, 200, 255, 0.9);
+  background: rgba(80, 40, 160, 0.12);
+  font-family: var(--font-mono), monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  border-radius: 3px;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+.pill-link:hover { border-color: rgba(170, 130, 255, 0.85); color: #fff; }
+.pill-link.primary {
+  border-color: color-mix(in srgb, var(--spice) 70%, transparent);
+  color: #ffd9ae;
+  background: color-mix(in srgb, var(--spice) 14%, transparent);
+}
+.pill-link.primary:hover { border-color: var(--spice); color: #fff; background: color-mix(in srgb, var(--spice) 24%, transparent); }
+.pill-link:focus-visible, .memory-card a:focus-visible {
+  outline: 2px solid rgba(180, 140, 255, 0.9);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }
 
 /* Nav label animations */
