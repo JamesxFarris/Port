@@ -1,81 +1,97 @@
 'use client';
-import { useState, useEffect } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
-import StarField from '@/components/StarField';
+import { useEffect, useState } from 'react';
 import GameCube, { type Section } from '@/components/GameCube';
 import About from '@/components/sections/About';
 import Projects from '@/components/sections/Projects';
+import Experience from '@/components/sections/Experience';
 import Skills from '@/components/sections/Skills';
 import Contact from '@/components/sections/Contact';
-import Experience from '@/components/sections/Experience';
 
-const SECTION_COMPONENTS: Record<Section, React.ComponentType> = {
-  about: About,
-  projects: Projects,
-  skills: Skills,
-  contact: Contact,
-  experience: Experience,
-};
+// Page order, top to bottom.
+const SECTIONS: { id: Section; title: string; Component: React.ComponentType }[] = [
+  { id: 'about', title: 'About', Component: About },
+  { id: 'projects', title: 'Projects', Component: Projects },
+  { id: 'experience', title: 'Experience', Component: Experience },
+  { id: 'skills', title: 'Skills', Component: Skills },
+  { id: 'contact', title: 'Contact', Component: Contact },
+];
 
-const NAV: Section[] = ['about', 'projects', 'experience', 'skills', 'contact'];
+const LINKEDIN = 'https://www.linkedin.com/in/james-farris-9b4b33166/';
 
-function useIsMobile() {
-  const [mobile, setMobile] = useState(false);
+/** Which section is crossing the upper-middle of the viewport. */
+function useScrollSpy(ids: Section[]) {
+  const [current, setCurrent] = useState<Section>(ids[0]);
   useEffect(() => {
-    const mq = window.matchMedia('(max-width: 768px)');
-    const update = () => setMobile(mq.matches);
-    update();
-    mq.addEventListener('change', update);
-    return () => mq.removeEventListener('change', update);
-  }, []);
-  return mobile;
+    const observer = new IntersectionObserver(
+      entries => {
+        for (const e of entries) {
+          if (e.isIntersecting) setCurrent(e.target.id as Section);
+        }
+      },
+      { rootMargin: '-35% 0px -60% 0px' },
+    );
+    ids.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+    return () => observer.disconnect();
+  }, [ids]);
+  return current;
 }
 
-function Identity({ compact = false }: { compact?: boolean }) {
+/** Cube edge length that fits the viewport: smaller on phones and short screens. */
+function useCubeSize() {
+  const [size, setSize] = useState(200);
+  useEffect(() => {
+    const update = () => {
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      if (w < 1024) setSize(120);
+      else setSize(h < 760 ? 140 : h < 880 ? 170 : 200);
+    };
+    update();
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  }, []);
+  return size;
+}
+
+function Identity() {
   return (
-    <div style={{ textAlign: 'center', marginBottom: compact ? 24 : 28, maxWidth: 460 }}>
+    <div style={{ maxWidth: 440 }}>
       <h1
         style={{
-          fontSize: compact ? '1.9rem' : '2.3rem',
+          fontFamily: 'var(--font-mono), monospace',
+          fontSize: 'clamp(2rem, 4vw, 2.6rem)',
           fontWeight: 600,
           letterSpacing: '-0.02em',
-          color: '#f4efff',
-          fontFamily: 'var(--font-mono), monospace',
           lineHeight: 1.1,
-          margin: 0,
         }}
       >
         James Farris
       </h1>
       <div
         style={{
-          fontSize: '0.9rem',
-          color: 'rgba(214,206,244,0.85)',
-          marginTop: 6,
           fontFamily: 'var(--font-mono), monospace',
+          fontSize: '1rem',
+          color: 'var(--indigo)',
+          marginTop: 8,
         }}
       >
-        Full-stack developer in Conway, SC
+        Full-stack developer &amp; IT support
       </div>
-      <p
-        style={{
-          fontSize: compact ? '0.95rem' : '1rem',
-          lineHeight: 1.55,
-          color: 'var(--platinum)',
-          margin: '14px auto 0',
-        }}
-      >
-        I build and run production web apps, including a 3,000+ listing directory with
-        Stripe payments and the booking site for a Myrtle Beach hotel.
+      <p style={{ fontSize: '1.02rem', lineHeight: 1.6, color: 'var(--text-muted)', marginTop: 16 }}>
+        I build and run production web apps, including a 3,000+ listing directory with Stripe
+        payments and the booking site for a Myrtle Beach hotel.
       </p>
-      <div style={{ display: 'flex', gap: 8, justifyContent: 'center', flexWrap: 'wrap', marginTop: 16 }}>
+      <div className="identity-links" style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 20 }}>
         <a className="pill-link primary" href="/resume.pdf" download>
           Resume
         </a>
         <a className="pill-link" href="https://github.com/JamesxFarris" target="_blank" rel="noopener noreferrer">
           GitHub
         </a>
-        <a className="pill-link" href="https://www.linkedin.com/in/james-farris-9b4b33166/" target="_blank" rel="noopener noreferrer">
+        <a className="pill-link" href={LINKEDIN} target="_blank" rel="noopener noreferrer">
           LinkedIn
         </a>
       </div>
@@ -83,280 +99,42 @@ function Identity({ compact = false }: { compact?: boolean }) {
   );
 }
 
-function SectionInner({
-  active,
-  onClose,
-}: {
-  active: Section;
-  onClose: () => void;
-}) {
-  const SectionContent = SECTION_COMPONENTS[active];
-  return (
-    <>
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          marginBottom: 24,
-          paddingBottom: 16,
-          borderBottom: '1px solid rgba(100,70,180,0.2)',
-        }}
-      >
-        <div
-          style={{
-            fontSize: '1.1rem',
-            color: '#f0eaff',
-            fontFamily: 'var(--font-mono), monospace',
-            letterSpacing: '0.15em',
-            textTransform: 'uppercase',
-          }}
-        >
-          {active}
-        </div>
-        <button
-          onClick={onClose}
-          style={{
-            background: 'none',
-            border: '1px solid rgba(120,80,220,0.3)',
-            color: 'rgba(206,198,236,0.7)',
-            fontSize: '0.65rem',
-            letterSpacing: '0.2em',
-            padding: '4px 12px',
-            cursor: 'pointer',
-            fontFamily: 'var(--font-mono), monospace',
-            textTransform: 'uppercase',
-            borderRadius: 2,
-            transition: 'color 0.2s, border-color 0.2s',
-          }}
-          onMouseEnter={e => {
-            (e.target as HTMLElement).style.color = 'rgba(220,200,255,0.9)';
-            (e.target as HTMLElement).style.borderColor = 'rgba(160,120,255,0.6)';
-          }}
-          onMouseLeave={e => {
-            (e.target as HTMLElement).style.color = 'rgba(206,198,236,0.7)';
-            (e.target as HTMLElement).style.borderColor = 'rgba(120,80,220,0.3)';
-          }}
-        >
-          ✕ Close
-        </button>
-      </div>
-      <div className="content-scroll" style={{ flex: 1, overflowY: 'auto', paddingRight: 8 }}>
-        <SectionContent />
-      </div>
-    </>
-  );
-}
-
-function MobileNav({
-  active,
-  onNavigate,
-}: {
-  active: Section | null;
-  onNavigate: (s: Section) => void;
-}) {
-  return (
-    <div
-      style={{
-        display: 'grid',
-        gridTemplateColumns: '1fr 1fr',
-        gap: 10,
-        width: '100%',
-        maxWidth: 340,
-        marginTop: 24,
-      }}
-    >
-      {NAV.map(s => (
-        <button
-          key={s}
-          onClick={() => onNavigate(s)}
-          aria-current={active === s ? 'true' : undefined}
-          className={`nav-label ${active === s ? 'active' : 'inactive'}`}
-          style={{
-            background: active === s ? 'rgba(90,50,180,0.25)' : 'rgba(40,20,80,0.25)',
-            border: `1px solid ${active === s ? 'rgba(160,120,255,0.55)' : 'rgba(120,80,220,0.3)'}`,
-            padding: '12px 8px',
-            borderRadius: 3,
-            textAlign: 'center',
-            fontFamily: 'var(--font-mono), monospace',
-            gridColumn: s === NAV[NAV.length - 1] ? '1 / -1' : undefined,
-            appearance: 'none',
-            WebkitAppearance: 'none',
-          }}
-        >
-          {s}
-        </button>
-      ))}
-    </div>
-  );
-}
-
 export default function Home() {
-  const [active, setActive] = useState<Section | null>(null);
-  const isMobile = useIsMobile();
+  const current = useScrollSpy(SECTIONS.map(s => s.id));
+  const cubeSize = useCubeSize();
+  const compact = cubeSize < 150;
 
-  const handleNavigate = (s: Section) => {
-    setActive(prev => (prev === s ? null : s));
+  const goTo = (id: Section) => {
+    document.getElementById(id)?.scrollIntoView({ block: 'start' });
   };
 
-  if (isMobile) {
-    return (
-      <main
-        style={{
-          position: 'relative',
-          width: '100vw',
-          minHeight: '100dvh',
-          overflowX: 'hidden',
-          overflowY: 'auto',
-        }}
-      >
-        <StarField />
-        <div
-          style={{
-            position: 'relative',
-            zIndex: 2,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            padding: '32px 20px 48px',
-            minHeight: '100dvh',
-          }}
-        >
-          {!active && <Identity compact />}
-          <GameCube
-            active={active}
-            onNavigate={handleNavigate}
-            compact
-            showLabels={false}
-          />
-          <MobileNav active={active} onNavigate={handleNavigate} />
-
-          <AnimatePresence mode="wait">
-            {active && (
-              <motion.div
-                key={active}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 10 }}
-                transition={{ duration: 0.35, ease: 'easeOut' }}
-                style={{
-                  width: '100%',
-                  marginTop: 32,
-                  paddingTop: 24,
-                  borderTop: '1px solid rgba(100,70,180,0.25)',
-                  display: 'flex',
-                  flexDirection: 'column',
-                }}
-              >
-                <SectionInner active={active} onClose={() => setActive(null)} />
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-      </main>
-    );
-  }
-
   return (
-    <main
-      style={{
-        position: 'relative',
-        width: '100vw',
-        height: '100dvh',
-        overflow: 'hidden',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
-    >
-      <StarField />
+    <main className="page">
+      <header className="rail">
+        <Identity />
+        <div style={{ alignSelf: 'center', marginTop: 24 }}>
+          {/* At the top of the page the cube idles; further down it faces the current section. */}
+          <GameCube
+            active={current === 'about' ? null : current}
+            onNavigate={goTo}
+            compact={compact}
+            size={cubeSize}
+          />
+        </div>
+      </header>
 
-      {/* Ambient glow behind cube */}
-      <div
-        style={{
-          position: 'absolute',
-          width: 400,
-          height: 400,
-          borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(80,30,160,0.18) 0%, transparent 70%)',
-          pointerEvents: 'none',
-          zIndex: 1,
-          left: active ? '22%' : '50%',
-          top: '50%',
-          transform: 'translate(-50%, -50%)',
-          transition: 'left 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-        }}
-      />
-
-      {/* Main layout */}
-      <div
-        style={{
-          position: 'relative',
-          zIndex: 2,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: active ? 'flex-start' : 'center',
-          width: '100%',
-          maxWidth: 1400,
-          padding: '0 40px',
-          gap: 0,
-        }}
-      >
-        {/* Cube panel */}
-        <motion.div
-          layout
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            flexShrink: 0,
-          }}
-          transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
-        >
-          {/* Name — shown when no section is active */}
-          <AnimatePresence>
-            {!active && (
-              <motion.div
-                key="name"
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.4 }}
-              >
-                <Identity />
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          <GameCube active={active} onNavigate={handleNavigate} compact={false} />
-        </motion.div>
-
-        {/* Content panel */}
-        <AnimatePresence mode="wait">
-          {active && (
-            <motion.div
-              key={active}
-              initial={{ opacity: 0, x: 60 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 40 }}
-              transition={{ duration: 0.4, ease: 'easeOut' }}
-              style={{
-                flex: 1,
-                height: '78vh',
-                maxHeight: 640,
-                marginLeft: 48,
-                paddingLeft: 48,
-                borderLeft: '1px solid rgba(100,70,180,0.25)',
-                overflow: 'hidden',
-                display: 'flex',
-                flexDirection: 'column',
-              }}
-            >
-              <SectionInner active={active} onClose={() => setActive(null)} />
-            </motion.div>
-          )}
-        </AnimatePresence>
+      <div className="content">
+        {SECTIONS.map(({ id, title, Component }) => (
+          <section key={id} id={id} aria-labelledby={`${id}-title`}>
+            <h2 id={`${id}-title`} className="section-title">
+              {title}
+            </h2>
+            <Component />
+          </section>
+        ))}
+        <footer style={{ marginTop: 72, fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+          Built with Next.js by James Farris. The cube is a nod to the GameCube menu.
+        </footer>
       </div>
     </main>
   );

@@ -20,12 +20,13 @@ const siteUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: 'James Farris — Full-Stack Developer',
+  title: 'James Farris | Full-Stack Developer & IT Support',
   description:
-    'Full-stack developer who ships production software — live sites serving real users. TypeScript, React, Next.js, Node. Available for full-stack roles.',
+    'Full-stack developer and IT support in Conway, SC. I build and run production web apps serving real users. TypeScript, React, Next.js, Node.',
   keywords: [
     'James Farris',
     'full-stack developer',
+    'IT support',
     'software engineer',
     'TypeScript',
     'React',
@@ -36,24 +37,24 @@ export const metadata: Metadata = {
   authors: [{ name: 'James Farris' }],
   openGraph: {
     type: 'website',
-    title: 'James Farris — Full-Stack Developer',
+    title: 'James Farris | Full-Stack Developer & IT Support',
     description:
-      'Full-stack developer who ships production software. TypeScript, React, Next.js, Node. Available for full-stack roles.',
+      'I build and run production web apps serving real users. TypeScript, React, Next.js, Node.',
     siteName: 'James Farris',
     url: siteUrl,
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'James Farris — Full-Stack Developer',
+    title: 'James Farris | Full-Stack Developer & IT Support',
     description:
-      'Full-stack developer who ships production software. Available for full-stack roles.',
+      'I build and run production web apps serving real users.',
   },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${body.variable} ${mono.variable}`}>
-      <body className="scanlines">{children}</body>
+      <body>{children}</body>
     </html>
   );
 }

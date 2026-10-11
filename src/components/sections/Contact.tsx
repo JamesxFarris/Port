@@ -1,29 +1,17 @@
 'use client';
-import { motion } from 'framer-motion';
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 
-const inputStyle: React.CSSProperties = {
-  width: '100%',
-  background: 'rgba(40,20,80,0.3)',
-  border: '1px solid rgba(120,80,220,0.3)',
-  color: '#f0eaff',
-  padding: '10px 14px',
-  fontSize: '0.82rem',
-  fontFamily: 'var(--font-mono), monospace',
-  outline: 'none',
-  borderRadius: 2,
-  transition: 'border-color 0.2s',
+const EMAIL = 'jafarris.exe@gmail.com';
+
+const labelStyle: React.CSSProperties = {
+  display: 'block',
+  fontSize: '0.85rem',
+  color: 'var(--text-muted)',
+  marginBottom: 6,
 };
-
-const label = (text: string) => (
-  <label style={{ display: 'block', fontSize: '0.6rem', letterSpacing: '0.2em', color: 'rgba(196,180,240,0.72)', marginBottom: 6, textTransform: 'uppercase' as const }}>
-    {text}
-  </label>
-);
 
 export default function Contact() {
   const [state, setState] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
-  const formRef = useRef<HTMLFormElement>(null);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -46,140 +34,50 @@ export default function Contact() {
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, x: 40 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.4, ease: 'easeOut' }}
-      style={{ height: '100%' }}
-    >
-      <div
-        style={{
-          fontSize: '0.65rem',
-          letterSpacing: '0.3em',
-          color: 'rgba(196,180,240,0.72)',
-          marginBottom: 24,
-          textTransform: 'uppercase',
-        }}
-      >
-        Get in Touch
-      </div>
+    <div style={{ maxWidth: 560 }}>
+      <p style={{ fontSize: '1rem', lineHeight: 1.6, color: 'var(--platinum)', marginBottom: 24 }}>
+        Hiring, or need a site built? Send a message or email me at{' '}
+        <a href={`mailto:${EMAIL}`} style={{ color: 'var(--indigo)' }}>
+          {EMAIL}
+        </a>
+        .
+      </p>
 
       {state === 'sent' ? (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          style={{ color: 'rgba(100,220,180,0.8)', fontSize: '0.85rem', fontFamily: 'var(--font-mono), monospace', lineHeight: 1.8 }}
-        >
-          <div style={{ fontSize: '1.5rem', marginBottom: 12 }}>✓</div>
-          <div>Message sent.</div>
-          <div style={{ color: 'rgba(214,206,238,0.85)', fontSize: '0.75rem', marginTop: 8 }}>
-            I'll get back to you at jafarris.exe@gmail.com.
-          </div>
-        </motion.div>
+        <p role="status" style={{ color: 'var(--live)', fontSize: '1rem', lineHeight: 1.6 }}>
+          Message sent. I&apos;ll reply to the email you gave.
+        </p>
       ) : (
-        <form
-          ref={formRef}
-          onSubmit={handleSubmit}
-          style={{ display: 'flex', flexDirection: 'column', gap: 14 }}
-        >
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
           <div>
-            {label('Name')}
-            <input
-              name="name"
-              type="text"
-              required
-              placeholder="Your name"
-              style={inputStyle}
-              onFocus={e => (e.target.style.borderColor = 'rgba(160,120,255,0.7)')}
-              onBlur={e => (e.target.style.borderColor = 'rgba(120,80,220,0.3)')}
-            />
+            <label htmlFor="contact-name" style={labelStyle}>Name</label>
+            <input id="contact-name" name="name" type="text" required className="field" autoComplete="name" />
           </div>
           <div>
-            {label('Email')}
-            <input
-              name="email"
-              type="email"
-              required
-              placeholder="your@email.com"
-              style={inputStyle}
-              onFocus={e => (e.target.style.borderColor = 'rgba(160,120,255,0.7)')}
-              onBlur={e => (e.target.style.borderColor = 'rgba(120,80,220,0.3)')}
-            />
+            <label htmlFor="contact-email" style={labelStyle}>Email</label>
+            <input id="contact-email" name="email" type="email" required className="field" autoComplete="email" />
           </div>
           <div>
-            {label('Message')}
-            <textarea
-              name="message"
-              required
-              rows={4}
-              placeholder="What are you building?"
-              style={{ ...inputStyle, resize: 'vertical' }}
-              onFocus={e => (e.target.style.borderColor = 'rgba(160,120,255,0.7)')}
-              onBlur={e => (e.target.style.borderColor = 'rgba(120,80,220,0.3)')}
-            />
+            <label htmlFor="contact-message" style={labelStyle}>Message</label>
+            <textarea id="contact-message" name="message" required rows={5} className="field" style={{ resize: 'vertical' }} />
           </div>
 
           {state === 'error' && (
-            <div style={{ fontSize: '0.7rem', color: 'rgba(255,100,100,0.8)', letterSpacing: '0.1em' }}>
-              Something went wrong — try emailing jafarris.exe@gmail.com directly.
-            </div>
+            <p role="alert" style={{ fontSize: '0.9rem', color: '#ff8a8a' }}>
+              The message didn&apos;t send. Email me directly at {EMAIL}.
+            </p>
           )}
 
           <button
             type="submit"
+            className="pill-link primary"
             disabled={state === 'sending'}
-            style={{
-              padding: '10px 24px',
-              background: 'rgba(80,40,160,0.3)',
-              border: '1px solid rgba(120,80,220,0.5)',
-              color: state === 'sending' ? 'rgba(180,150,255,0.4)' : 'rgba(220,200,255,0.9)',
-              fontSize: '0.7rem',
-              letterSpacing: '0.25em',
-              textTransform: 'uppercase',
-              cursor: state === 'sending' ? 'default' : 'pointer',
-              fontFamily: 'var(--font-mono), monospace',
-              transition: 'background 0.2s, border-color 0.2s',
-              borderRadius: 2,
-              alignSelf: 'flex-start',
-            }}
-            onMouseEnter={e => {
-              if (state === 'sending') return;
-              const el = e.currentTarget;
-              el.style.background = 'rgba(100,50,200,0.4)';
-              el.style.borderColor = 'rgba(160,120,255,0.8)';
-            }}
-            onMouseLeave={e => {
-              const el = e.currentTarget;
-              el.style.background = 'rgba(80,40,160,0.3)';
-              el.style.borderColor = 'rgba(120,80,220,0.5)';
-            }}
+            style={{ alignSelf: 'flex-start' }}
           >
-            {state === 'sending' ? 'Sending...' : 'Send Message'}
+            {state === 'sending' ? 'Sending…' : 'Send message'}
           </button>
         </form>
       )}
-
-      <div style={{ marginTop: 32, paddingTop: 24, borderTop: '1px solid rgba(100,70,180,0.2)' }}>
-        <div style={{ fontSize: '0.6rem', letterSpacing: '0.2em', color: 'rgba(196,180,240,0.7)', marginBottom: 12, textTransform: 'uppercase' }}>
-          Also find me
-        </div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-          {[
-            { label: 'github.com/JamesxFarris', href: 'https://github.com/JamesxFarris' },
-            { label: 'linkedin.com/in/james-farris-9b4b33166', href: 'https://www.linkedin.com/in/james-farris-9b4b33166/' },
-          ].map(({ label: lbl, href }) => (
-            <a
-              key={href}
-              href={href}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ color: 'rgba(206,196,242,0.85)', fontSize: '0.75rem', textDecoration: 'none', letterSpacing: '0.08em' }}
-            >
-              {lbl}
-            </a>
-          ))}
-        </div>
-      </div>
-    </motion.div>
+    </div>
   );
 }

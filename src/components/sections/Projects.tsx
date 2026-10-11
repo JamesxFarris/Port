@@ -1,5 +1,4 @@
 'use client';
-import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { projects, type Project } from '@/data/projects';
 
@@ -96,9 +95,9 @@ function Header({ p }: { p: Project }) {
   return (
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 10, flexWrap: 'wrap' }}>
       <div>
-        <h3 style={{ fontFamily: 'var(--font-mono), monospace', fontSize: '1rem', fontWeight: 600, color: '#f4efff', margin: 0 }}>
+        <h4 style={{ fontFamily: 'var(--font-mono), monospace', fontSize: '1rem', fontWeight: 600, color: '#f4efff', margin: 0 }}>
           {p.name}
-        </h3>
+        </h4>
         <div style={{ fontSize: '0.78rem', color: 'rgba(200,190,236,0.75)', marginTop: 2 }}>
           {p.tagline}, {p.year}
         </div>
@@ -114,14 +113,11 @@ const CASE_ROWS = [
   ['Result', 'result'],
 ] as const;
 
-function FeaturedCard({ p, i }: { p: Project; i: number }) {
+function FeaturedCard({ p }: { p: Project }) {
   const cs = p.caseStudy;
   return (
-    <motion.article
+    <article
       className="memory-card"
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: i * 0.08, duration: 0.3 }}
       style={{ padding: 16, ['--accent' as string]: p.accentColor } as React.CSSProperties}
     >
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 16 }}>
@@ -154,17 +150,14 @@ function FeaturedCard({ p, i }: { p: Project; i: number }) {
       <div style={{ marginTop: 14 }}>
         <Tech p={p} />
       </div>
-    </motion.article>
+    </article>
   );
 }
 
-function CompactCard({ p, i }: { p: Project; i: number }) {
+function CompactCard({ p }: { p: Project }) {
   return (
-    <motion.article
+    <article
       className="memory-card"
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.16 + i * 0.06, duration: 0.3 }}
       style={{ padding: 12, ['--accent' as string]: p.accentColor } as React.CSSProperties}
     >
       <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap' }}>
@@ -177,31 +170,23 @@ function CompactCard({ p, i }: { p: Project; i: number }) {
           <Tech p={p} />
         </div>
       </div>
-    </motion.article>
+    </article>
   );
 }
 
-const groupHeading: React.CSSProperties = {
-  fontFamily: 'var(--font-mono), monospace',
-  fontSize: '0.82rem',
-  fontWeight: 500,
-  color: 'rgba(206,196,244,0.85)',
-  margin: '0 0 12px',
-};
-
 export default function Projects() {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 28, paddingBottom: 8 }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
       <section>
-        <h2 style={groupHeading}>Production work</h2>
+        <h3 className="subhead">Production work</h3>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-          {featured.map((p, i) => <FeaturedCard key={p.id} p={p} i={i} />)}
+          {featured.map(p => <FeaturedCard key={p.id} p={p} />)}
         </div>
       </section>
       <section>
-        <h2 style={groupHeading}>More projects</h2>
+        <h3 className="subhead">More projects</h3>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-          {more.map((p, i) => <CompactCard key={p.id} p={p} i={i} />)}
+          {more.map(p => <CompactCard key={p.id} p={p} />)}
         </div>
       </section>
     </div>

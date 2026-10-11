@@ -103,6 +103,7 @@ export type Role = {
   points: string[];
 };
 
+// Newest first.
 export const experience: Role[] = [
   {
     title: 'Front Desk & Web Developer',
@@ -111,10 +112,24 @@ export const experience: Role[] = [
     dates: 'Apr 2025 – now',
     current: true,
     points: [
-      "Designed, built, and maintain holidaysandsnorth.com, including hosting, DNS, and ongoing content updates.",
+      'Designed, built, and maintain holidaysandsnorth.com, including hosting, DNS, and ongoing content updates.',
       'Maintain the print server, Wi-Fi network, and DNS configuration; first-line tech support for staff hardware and connectivity issues.',
       'Handle reservations, check-ins, and guest issue resolution.',
     ],
+  },
+  {
+    title: 'Operations Team Member',
+    org: 'Target',
+    place: '',
+    dates: '2022 – 2025',
+    points: [],
+  },
+  {
+    title: 'Shift Supervisor',
+    org: 'CVS Health',
+    place: '',
+    dates: '2020 – 2021',
+    points: [],
   },
   {
     title: 'Technical Support Specialist',
@@ -126,10 +141,14 @@ export const experience: Role[] = [
       'Worked tickets in Salesforce Service Cloud and maintained internal SharePoint training docs.',
     ],
   },
+  {
+    title: 'Manager',
+    org: 'Rite Aid',
+    place: '',
+    dates: '2018 – 2019',
+    points: [],
+  },
 ];
-
-export const earlierRoles =
-  'Operations at Target (2022–2025), shift supervisor at CVS Health (2020–2021), and store manager at Rite Aid (2018–2019): years of customer-facing, supervisory, and operations work.';
 
 export const education = [
   { name: 'B.S. Computer Science', org: 'Western Governors University', date: 'Expected 2027' },

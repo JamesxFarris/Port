@@ -9,6 +9,8 @@ type Props = {
   onNavigate: (s: Section) => void;
   compact?: boolean;
   showLabels?: boolean;
+  /** Edge length in px; defaults to 100 (compact) or 220. */
+  size?: number;
 };
 
 // Each face is mounted on a real side of the cube that matches where its
@@ -32,93 +34,6 @@ const FACES: {
 // Resting pose when nothing is selected — a gentle 3/4 view of the front face.
 const IDLE_POSE = { rotX: -14, rotY: -16 };
 
-// Decorative ASCII for the otherwise-empty front/back cube faces.
-const ASCII_CAT = [
-  '       _',
-  '       \\`*-.',
-  '        )  _`-.',
-  '       .  : `. .',
-  "       : _   '  \\",
-  '       ; *` _.   `*-._',
-  "       `-.-'          `-.",
-  '         ;       `       `.',
-  '         :.       .        \\',
-  "         . \\  .   :   .-'   .",
-  "         '  `+.;  ;  '      :",
-  "         :  '  |    ;       ;-.",
-  "         ; '   : :`-:     _.`* ;",
-  "      .*' /  .*' ; .*`- +'  `*'",
-  "      `*-*   `*-*  `*-*'",
-].join('\n');
-
-function AsciiArt({
-  art,
-  size,
-  color,
-  // Glyph width as a fraction of font size. Courier New Latin glyphs are
-  // ~0.6em; Braille blocks fall back to a font that renders them ~1em wide.
-  charAspect = 0.6,
-  lineHeight = 1.1,
-  // Fill character used to pad short lines into a clean rectangle. Use a
-  // blank Braille cell for Braille art so every cell is the same glyph
-  // family (and therefore the same width).
-  fill = ' ',
-  // 'left' keeps each line's own indentation (good for art drawn on a
-  // fixed grid). 'center' strips blank padding from both ends and re-pads
-  // symmetrically, so a lopsided figure reads as centered.
-  align = 'left',
-}: {
-  art: string;
-  size: number;
-  color: string;
-  charAspect?: number;
-  lineHeight?: number;
-  fill?: string;
-  align?: 'left' | 'center';
-}) {
-  const rawLines = art.split('\n');
-  // Treat ASCII space and blank Braille (U+2800) as "empty" for trimming.
-  const trim = (l: string) => l.replace(/^[ ⠀]+|[ ⠀]+$/g, '');
-  const lines = align === 'center' ? rawLines.map(trim) : rawLines;
-  const cols = Math.max(...lines.map(l => [...l].length));
-  // Pad every line to the same width so the block is a true rectangle.
-  const block = lines
-    .map(l => {
-      const pad = cols - [...l].length;
-      if (align === 'center') {
-        const left = Math.floor(pad / 2);
-        return fill.repeat(left) + l + fill.repeat(pad - left);
-      }
-      return l + fill.repeat(pad);
-    })
-    .join('\n');
-  // Fit the block within the face with a little padding.
-  const fontSize = Math.max(
-    4,
-    Math.min(
-      (size * 0.86) / (cols * charAspect),
-      (size * 0.86) / (rawLines.length * lineHeight),
-    ),
-  );
-  return (
-    <pre
-      aria-hidden="true"
-      style={{
-        margin: 0,
-        color,
-        fontFamily: 'var(--font-mono), monospace',
-        fontSize,
-        lineHeight,
-        whiteSpace: 'pre',
-        userSelect: 'none',
-        pointerEvents: 'none',
-      }}
-    >
-      {block}
-    </pre>
-  );
-}
-
 const faceStyle = (rotY: number, rotX: number, size: number): React.CSSProperties => ({
   position: 'absolute',
   width: size,
@@ -126,8 +41,8 @@ const faceStyle = (rotY: number, rotX: number, size: number): React.CSSPropertie
   transform: `rotateY(${rotY}deg) rotateX(${rotX}deg) translateZ(${size / 2}px)`,
 });
 
-export default function GameCube({ active, onNavigate, compact = false, showLabels = true }: Props) {
-  const size = compact ? 100 : 220;
+export default function GameCube({ active, onNavigate, compact = false, showLabels = true, size: sizeProp }: Props) {
+  const size = sizeProp ?? (compact ? 100 : 220);
   const half = size / 2;
 
   const rotateX = useMotionValue(IDLE_POSE.rotX);
@@ -260,32 +175,26 @@ export default function GameCube({ active, onNavigate, compact = false, showLabe
               </div>
             ))}
 
-            {/* Front face — shown at rest, decorative */}
+            {/* Front face: shown at rest, carries the monogram */}
             <div
               className="cube-face"
               style={{
                 position: 'absolute',
                 width: size, height: size,
                 transform: `translateZ(${half}px)`,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
               }}
             >
-              {compact ? (
-                <span
-                  style={{
-                    color: 'rgba(180,150,255,0.3)',
-                    fontSize: '0.5rem',
-                    letterSpacing: '0.35em',
-                    fontFamily: 'var(--font-mono), monospace',
-                  }}
-                >
-                  ◆
-                </span>
-              ) : (
-                <AsciiArt art={ASCII_CAT} size={size} color="rgba(190,160,255,0.42)" />
-              )}
+              <span
+                style={{
+                  color: 'rgba(230,222,255,0.55)',
+                  fontSize: size * 0.24,
+                  fontWeight: 600,
+                  fontFamily: 'var(--font-mono), monospace',
+                  letterSpacing: '0.04em',
+                }}
+              >
+                JF
+              </span>
             </div>
           </motion.div>
         </div>

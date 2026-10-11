@@ -1,7 +1,7 @@
 import { ImageResponse } from 'next/og';
 
 export const runtime = 'edge';
-export const alt = 'James Farris — Full-Stack Developer';
+export const alt = 'James Farris | Full-Stack Developer & IT Support';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
@@ -16,7 +16,7 @@ export default function OpengraphImage() {
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          background: 'linear-gradient(135deg, #0a0a2a 0%, #1a1040 100%)',
+          background: '#0d0f1a',
           fontFamily: 'monospace',
         }}
       >
@@ -30,11 +30,11 @@ export default function OpengraphImage() {
         <div style={{ fontSize: 72, fontWeight: 700, color: '#f0eaff', marginTop: 36 }}>
           James Farris
         </div>
-        <div style={{ fontSize: 30, letterSpacing: 8, color: '#cec6ec', marginTop: 12 }}>
-          FULL-STACK DEVELOPER
+        <div style={{ fontSize: 32, color: '#9d8cff', marginTop: 14 }}>
+          Full-stack developer &amp; IT support
         </div>
-        <div style={{ fontSize: 24, color: '#8b5cf6', marginTop: 28 }}>
-          Available for full-stack roles
+        <div style={{ fontSize: 24, color: '#a9adc4', marginTop: 24 }}>
+          Production web apps with real users
         </div>
       </div>
     ),

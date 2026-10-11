@@ -1,92 +1,44 @@
-'use client';
-import { motion } from 'framer-motion';
 import { skills } from '@/data/projects';
 
 const CATEGORY_COLORS: Record<string, string> = {
-  Languages: '#8B5CF6',
-  Frameworks: '#0EA5C6',
-  'Data & Cloud': '#14B8A6',
-  'Tools & APIs': '#DB2777',
+  Languages: '#9D8CFF',
+  Frameworks: '#38BDF8',
+  'Data & Cloud': '#2DD4BF',
+  'Tools & APIs': '#F472B6',
   'IT & Support': '#F39A3D',
 };
 
 export default function Skills() {
   return (
-    <motion.div
-      className="content-scroll"
-      initial={{ opacity: 0, x: 40 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.4, ease: 'easeOut' }}
-      style={{ height: '100%', paddingRight: 4 }}
-    >
-      <div
-        style={{
-          fontSize: '0.65rem',
-          letterSpacing: '0.3em',
-          color: 'rgba(196,180,240,0.72)',
-          marginBottom: 24,
-          textTransform: 'uppercase',
-        }}
-      >
-        Technical Skills
-      </div>
-
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-        {Object.entries(skills).map(([category, items], ci) => (
-          <motion.div
-            key={category}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: ci * 0.08 }}
-          >
-            <div
-              style={{
-                fontSize: '0.6rem',
-                letterSpacing: '0.25em',
-                color: CATEGORY_COLORS[category] ?? 'rgba(180,150,255,0.5)',
-                textTransform: 'uppercase',
-                marginBottom: 10,
-                display: 'flex',
-                alignItems: 'center',
-                gap: 8,
-              }}
-            >
-              <span
-                style={{
-                  display: 'inline-block',
-                  width: 20,
-                  height: 1,
-                  background: CATEGORY_COLORS[category] ?? 'rgba(180,150,255,0.5)',
-                  opacity: 0.6,
-                }}
-              />
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 24 }}>
+      {Object.entries(skills).map(([category, items]) => {
+        const color = CATEGORY_COLORS[category] ?? 'var(--indigo)';
+        return (
+          <div key={category}>
+            <h3 className="subhead" style={{ color, display: 'flex', alignItems: 'center', gap: 8 }}>
+              <span aria-hidden="true" style={{ width: 8, height: 8, borderRadius: 2, background: color }} />
               {category}
-            </div>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-              {(items as string[]).map((skill, si) => (
-                <motion.span
+            </h3>
+            <ul style={{ listStyle: 'none', display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+              {(items as string[]).map(skill => (
+                <li
                   key={skill}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: ci * 0.08 + si * 0.04 }}
                   style={{
-                    padding: '5px 14px',
-                    border: `1px solid ${CATEGORY_COLORS[category]}44`,
-                    background: `${CATEGORY_COLORS[category]}14`,
-                    color: 'rgba(224,216,250,0.92)',
-                    fontSize: '0.78rem',
-                    letterSpacing: '0.05em',
-                    borderRadius: 2,
-                    fontFamily: 'var(--font-mono), monospace',
+                    padding: '4px 10px',
+                    border: '1px solid var(--line)',
+                    background: 'var(--surface)',
+                    color: 'var(--platinum)',
+                    fontSize: '0.88rem',
+                    borderRadius: 4,
                   }}
                 >
                   {skill}
-                </motion.span>
+                </li>
               ))}
-            </div>
-          </motion.div>
-        ))}
-      </div>
-    </motion.div>
+            </ul>
+          </div>
+        );
+      })}
+    </div>
   );
 }
